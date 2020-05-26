@@ -17,15 +17,15 @@ response=$(
 echo "Generating client...Done"
 
 
-LINK_URL=$(echo $response | grep -Eo 'https:[^"]+')
+LINK_URL="$(echo $response | grep -Eo 'https:[^"]+')"
 CLIENT_NAME="domain-client"
 
 echo "Downloading $CLIENT_NAME..."
-curl $LINK_URL -o $CLIENT_NAME.zip
+curl "$LINK_URL" -o "$CLIENT_NAME.zip"
 echo "Downloading $CLIENT_NAME...Done"
 
 echo "Unzip Package $CLIENT_NAME..."
-unzip $CLIENT_NAME.zip -q
+unzip -q $CLIENT_NAME.zip 
 echo "Unzip Package $CLIENT_NAME...Done"
 
 mv python-client $CLIENT_NAME
