@@ -27,3 +27,7 @@ echo "Downloading $CLIENT_NAME...Done"
 echo "Unzip Package $CLIENT_NAME..."
 unzip $CLIENT_NAME.zip -q
 echo "Unzip Package $CLIENT_NAME...Done"
+
+mv python-client $CLIENT_NAME
+rm -rf $CLIENT_NAME.zip
+echo "$CLIENT_NAME library creation done"
