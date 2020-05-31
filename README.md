@@ -18,3 +18,32 @@ cd domainClient
 python setup.py install
 ```
 
+3. To use the library, first generate an access token:
+
+```python
+# Import both API client & authentication fn
+import domainClient as dc
+from src.domain_authentication import get_access_token
+
+# Populate Keys & Scope
+client_id = '<client id>'
+client_secret = '<client secret>'
+scopes = ['api_listings_read', 'api_agencies_read'] # Extend/Update as required
+
+# Generate Access Token
+auth_info = get_access_token(client_id, client_secret, scopes)
+print(auth_info)
+```
+
+4. It can then by used to interact with the API. For all methods see:
+    https://developer.domain.com.au/docs/apis
+
+```python
+# Configure Authentication Client
+configuration = dc.Configuration()
+configuration.access_token = auth_info['access_token']
+
+# View most recent sales results in Adelaide
+sales_results_obj = dc.SalesResultsApi(dc.ApiClient(configuration))
+sales_results_obj.sales_results_listings('Adelaide')
+```
