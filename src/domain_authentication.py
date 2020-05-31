@@ -5,7 +5,26 @@ Helper function to generate authentication token for the Domain Client
 import requests
 
 
-def GetAccessTokenJson(client_id: str, secret: str, scopes: list):
+def get_access_token(client_id: str, secret: str, scopes: list):
+    """Generate access token via the OAUTH2 grant method
+
+    Reference: https://developer.domain.com.au/docs/authentication/oauth/client-credentials-grant
+
+    Args:
+        client_id (str): Your client ID
+        secret (str): Your client secret
+        scopes (list): Desired scope(s) to provide authentication for
+                       Required scopes provided in: https://developer.domain.com.au/docs/apis
+
+    Raises:
+        Exception: Any issues present when attempting token generation
+
+    Returns:
+        dict: JSON result with access token containing:
+                - access_token: Your token required for API interaction
+                - expires_in: The lifetime in seconds of the token
+                - token_type: Token type, in this case "bearer"
+    """
 
     oauth_url = "https://auth.domain.com.au/v1/connect/token"
 
