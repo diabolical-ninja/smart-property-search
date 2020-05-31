@@ -1,13 +1,10 @@
-"""
-Helper function to generate authentication token for the Domain Client
-"""
+""" Helper function to generate authentication token for the Domain Client """
 
 import requests
 
 
 def get_access_token(client_id: str, secret: str, scopes: list):
     """Generate access token via the OAUTH2 grant method
-
     Reference: https://developer.domain.com.au/docs/authentication/oauth/client-credentials-grant
 
     Args:
