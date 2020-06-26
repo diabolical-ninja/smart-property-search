@@ -1,0 +1,34 @@
+service: smart-property-search
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ap-southeast-2
+  profile: root
+  environment:
+    CLIENT_ID: ''
+    CLIENT_SECRET: ''
+
+
+package:
+ exclude:
+  - package.json
+  - package-log.json
+  - node_modules/**
+  - .vscode/**
+  - .env
+
+functions:
+  search:
+    handler: handler.search
+    events:
+      - http:
+          path: search
+          method: get
+
+
+plugins:
+  - serverless-python-requirements
+custom:
+  pythonRequirements:
+    dockerizePip: true
