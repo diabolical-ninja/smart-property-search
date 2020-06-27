@@ -9,18 +9,12 @@ provider:
     CLIENT_ID: ''
     CLIENT_SECRET: ''
 
-
-package:
- exclude:
-  - package.json
-  - package-log.json
-  - node_modules/**
-  - .vscode/**
-  - .env
-
 functions:
   search:
+    module: src
     handler: handler.search
+    include:
+      - src/**
     events:
       - http:
           path: search
@@ -29,6 +23,10 @@ functions:
 
 plugins:
   - serverless-python-requirements
+
 custom:
   pythonRequirements:
     dockerizePip: true
+
+package:
+  individually: true

@@ -1,17 +1,8 @@
 import json
-import domainClient as dc
-from src.domain_authentication import get_access_token
+from domainClient import Configuration, ListingsApi, ApiClient
+from domain_authentication import get_access_token
+from utils import json_serial
 import os
-from datetime import date, datetime
-
-
-def json_serial(obj):
-    """JSON serializer for objects not serialisable by default json code"""
-
-    if isinstance(obj, (datetime, date)):
-        return obj.isoformat()
-    raise TypeError ("Type %s not serialisable" % type(obj))
-
 
 
 # Generate Access Token
@@ -21,7 +12,7 @@ auth_info = get_access_token(os.getenv('CLIENT_ID'),
                              scopes)
 
 # Configure Authentication Client
-configuration = dc.Configuration()
+configuration = Configuration()
 configuration.access_token = auth_info['access_token']
 
 search_parameters = {}
@@ -44,7 +35,7 @@ search_parameters['locations'] = locations_list
 
 def search(event, context):
 
-    listings = dc.ListingsApi(dc.ApiClient(configuration))
+    listings = ListingsApi(ApiClient(configuration))
     results = listings.listings_detailed_residential_search(search_parameters)
     results = [result.to_dict() for result in results]
 
