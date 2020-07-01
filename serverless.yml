@@ -6,8 +6,8 @@ provider:
   region: ap-southeast-2
   profile: root
   environment:
-    CLIENT_ID: ''
-    CLIENT_SECRET: ''
+    CLIENT_ID: ${env:CLIENT_ID}
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
 
 functions:
   search:
