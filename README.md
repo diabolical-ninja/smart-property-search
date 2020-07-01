@@ -12,39 +12,41 @@ Buyer focused property search, with results tailored to your needs rather than t
 sh build_domain_client_library.sh
 ```
 
-2.  Install library
+2.  Copy contents to `src`
 
 ```sh
-cd domainClient
-python setup.py install
+mv domainClient/domainClient src/domainClient
 ```
 
-3.  To use the library, first generate an access token:
+3.  Install & configure serverless via the instructions on their [website](https://www.serverless.com/framework/docs/getting-started/)
 
-```python
-# Import both API client & authentication fn
-import domainClient as dc
-from src.domain_authentication import get_access_token
 
-# Populate Keys & Scope
-client_id = '<client id>'
-client_secret = '<client secret>'
-scopes = ['api_listings_read', 'api_agencies_read'] # Extend/Update as required
+4.  Generate client ID & secret from [Domain](https://developer.domain.com.au/docs/introduction) & populate the appropriate fields within `serverless.yml`.
 
-# Generate Access Token
-auth_info = get_access_token(client_id, client_secret, scopes)
-print(auth_info)
+5.  To deploy:
+
+```sh
+sls deploy
 ```
 
-4.  It can then by used to interact with the API. For all methods see:
-    <https://developer.domain.com.au/docs/apis>
+6.  An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
 
-```python
-# Configure Authentication Client
-configuration = dc.Configuration()
-configuration.access_token = auth_info['access_token']
+```json
+{
+    "listing_type": "Sale",
+    "minBedrooms": 2,
+    "maxBathrooms": 4,
+    "minCarspaces": 1,
+    "minPrice": 500000,
+    "locations": [{
+        "state": "SA"
+    }],
+    "pageSize": 100
+}
+```
 
-# View most recent sales results in Adelaide
-sales_results_obj = dc.SalesResultsApi(dc.ApiClient(configuration))
-sales_results_obj.sales_results_listings('Adelaide')
+7.  Once done, teardown the infrastructure using:
+
+```sh
+sls remove
 ```
