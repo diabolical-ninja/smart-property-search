@@ -12,22 +12,22 @@ Buyer focused property search, with results tailored to your needs rather than t
 sh build_domain_client_library.sh
 ```
 
-2. Copy contents to `src`
+2.  Copy contents to `src`
 ```sh
 mv domainClient/domainClient src/domainClient
 ```
 
-3. Install & configure serverless via the instructions on their [website](https://www.serverless.com/framework/docs/getting-started/)
+3.  Install & configure serverless via the instructions on their [website](https://www.serverless.com/framework/docs/getting-started/)
 
 
-4. Generate client ID & secret from [Domain](https://developer.domain.com.au/docs/introduction) & populate the appropriate fields within `serverless.yml`.
+4.  Generate client ID & secret from [Domain](https://developer.domain.com.au/docs/introduction) & populate the appropriate fields within `serverless.yml`.
 
-4. To deploy:
+5.  To deploy:
 ```sh
 sls deploy
 ```
 
-5. An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
+6.  An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
 ```json
 {
     "listing_type": "Sale",
@@ -42,8 +42,7 @@ sls deploy
 }
 ```
 
-
-5. Once done, teardown the infrastructure using:
+7.  Once done, teardown the infrastructure using:
 ```
 sls remove
 ```
