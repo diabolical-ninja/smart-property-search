@@ -13,6 +13,7 @@ sh build_domain_client_library.sh
 ```
 
 2.  Copy contents to `src`
+
 ```sh
 mv domainClient/domainClient src/domainClient
 ```
@@ -23,11 +24,13 @@ mv domainClient/domainClient src/domainClient
 4.  Generate client ID & secret from [Domain](https://developer.domain.com.au/docs/introduction) & populate the appropriate fields within `serverless.yml`.
 
 5.  To deploy:
+
 ```sh
 sls deploy
 ```
 
 6.  An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
+
 ```json
 {
     "listing_type": "Sale",
@@ -43,6 +46,7 @@ sls deploy
 ```
 
 7.  Once done, teardown the infrastructure using:
-```
+
+```sh
 sls remove
 ```
