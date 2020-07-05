@@ -13,11 +13,17 @@ jobs:
     - uses: actions/checkout@master
     - name: Install Dependencies
       run: npm install
+
+    - name: serverless serverless-python-requirements install
+      uses: spring-media/serverless-github-actions-playground/.github/workflows@ci_cd
+      with:
+        args: plugin install -n serverless-python-requirements
         
     - name: serverless deploy
       uses: serverless/github-action@master
       with:
         args: deploy
+        entrypoint: /bin/bash
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
