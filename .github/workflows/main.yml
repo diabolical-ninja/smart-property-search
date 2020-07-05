@@ -12,10 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Install Dependencies
-      run: |
-        npm install
-        sls plugin install -n serverless-python-requirements
-
+      run: npm install
+        
     - name: serverless deploy
       uses: serverless/github-action@master
       with:
