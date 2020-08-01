@@ -1,11 +1,13 @@
 {
-  "name": "servessless-test",
+  "name": "smart-property-search",
   "description": "",
   "version": "0.1.0",
-  "dependencies": {
-    "serverless-python-requirements": "^5.1.0"
-    },
+  "dependencies": {},
+  "scripts": {
+    "deploy": "serverless deploy"
+  },
   "devDependencies": {
+    "serverless": "^1.67.0",
     "serverless-python-requirements": "^5.1.0"
   }
 }
