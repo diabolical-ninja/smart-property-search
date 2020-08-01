@@ -1,8 +1,8 @@
 # Custom Ignores
-domainClient/
 .vscode
 .serverless/
 node_modules/
+scratchpad.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
