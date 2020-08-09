@@ -3,11 +3,10 @@ service: smart-property-search
 provider:
   name: aws
   runtime: python3.8
-  region: ap-southeast-2
-  profile: root
+  region: ${env:AWS_REGION}
   environment:
-    CLIENT_ID: ''
-    CLIENT_SECRET: ''
+    CLIENT_ID: ${env:CLIENT_ID}
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
 
 functions:
   search:
