@@ -15,21 +15,34 @@ searcher = SmartSearch(domain_client_id = os.getenv('CLIENT_ID'),
 
 def search(event, context):
 
-    # Extract POST body information
-    data = json.loads(event['body'])
-    domain_request = data['domain']
-    smart_filters = data['filters']
+    try:
+        # Extract POST body information
+        data = json.loads(event['body'])
+        domain_request = data['domain']
+        smart_filters = data['filters']
 
-    # Retrieve initial search results
-    searcher.listing_search(domain_request)
+        # Retrieve initial search results
+        searcher.listing_search(domain_request)
 
-    # Append results with travel information
-    southern_cross = (-37.818294, 144.952447)
-    searcher.calculate_travel_time(destination=southern_cross)
+        # Append results with travel information
+        southern_cross = (-37.818294, 144.952447)
+        searcher.calculate_travel_time(destination=southern_cross)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(searcher.search_results, default = json_serial)
-    }
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(searcher.search_results, default = json_serial)
+        }
 
-    return response
+        return response
+
+    except Exception as ex:
+
+        print(ex)
+
+        response = {
+            "statusCode": 504,
+            "error": ex
+            "body": json.dumps(event)
+        }        
+
+        return response
