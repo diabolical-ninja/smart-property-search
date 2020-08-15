@@ -1,32 +1,35 @@
 import json
-from domainClient import Configuration, ListingsApi, ApiClient
-from domain_authentication import get_access_token
+from smart_search import SmartSearch
 from utils import json_serial
 import os
 
 
-# Generate Access Token
+# Instantiate searcher
 scopes = ['api_listings_read', 'api_agencies_read']
-auth_info = get_access_token(os.getenv('CLIENT_ID'),
-                             os.getenv('CLIENT_SECRET'),
-                             scopes)
-
-# Configure Authentication Client
-configuration = Configuration()
-configuration.access_token = auth_info['access_token']
+searcher = SmartSearch(domain_client_id = os.getenv('CLIENT_ID'),
+                       domain_client_secret = os.getenv('CLIENT_SECRET'),
+                       domain_scopes = scopes,
+                       google_maps_key = os.getenv('GOOGLE_MAPS_KEY')
+                       )
 
 
 def search(event, context):
 
+    # Extract POST body information
     data = json.loads(event['body'])
+    domain_request = data['domain']
+    smart_filters = data['filters']
 
-    listings = ListingsApi(ApiClient(configuration))
-    results = listings.listings_detailed_residential_search(data)
-    results = [result.to_dict() for result in results]
+    # Retrieve initial search results
+    searcher.listing_search(domain_request)
+
+    # Append results with travel information
+    southern_cross = (-37.818294, 144.952447)
+    searcher.calculate_travel_time(destination=southern_cross)
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(results, default = json_serial)
+        "body": json.dumps(searcher.search_results, default = json_serial)
     }
 
     return response
