@@ -41,7 +41,7 @@ def search(event, context):
 
         response = {
             "statusCode": 504,
-            "error": ex
+            "error": ex,
             "body": json.dumps(event)
         }        
 
