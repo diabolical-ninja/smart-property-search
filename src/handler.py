@@ -25,8 +25,8 @@ def search(event, context):
         searcher.listings_search(domain_request)
 
         # Append results with travel information
-        # southern_cross = (-37.818294, 144.952447)
-        # searcher.calculate_travel_time(destination=southern_cross)
+        southern_cross = (-37.818294, 144.952447)
+        searcher.calculate_travel_time(destination=southern_cross)
 
         response = {
             "statusCode": 200,
