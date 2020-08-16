@@ -40,8 +40,8 @@ def search(event, context):
         print(ex)
 
         response = {
-            "statusCode": 504,
-            "error": ex
+            "statusCode": 500,
+            "error": json.dumps(str(ex))
         }
 
         return response
