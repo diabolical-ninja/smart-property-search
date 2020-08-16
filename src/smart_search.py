@@ -60,7 +60,13 @@ class SmartSearch(DomainListings, Client):
         Duration: Seconds
         """
 
-        return {
-            'distance': result['distance']['value'],
-            'duration': result['duration']['value']
-        }
+        try:
+            return {
+                'distance': result['distance']['value'],
+                'duration': result['duration']['value']
+            }
+        except:
+            return {
+                'distance': 'No Result',
+                'duration': 'No Result'
+            }
