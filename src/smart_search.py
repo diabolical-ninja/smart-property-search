@@ -16,7 +16,10 @@ class SmartSearch(DomainListings, Client):
         Client.__init__(self, key = google_maps_key)
 
     def listings_search(self, search_parameters):
-        self.search_results = self.retrieve_residential_search_listings(search_parameters)
+        results = self.retrieve_residential_search_listings(search_parameters)
+        # Results with None listing are projects & for now these can be excluded
+        # Likely a better way to handle this though
+        self.search_results = [x for x in results if x['listing'] is not None]
 
     def calculate_travel_time(self, destination, target_arrival_time=None):
 
