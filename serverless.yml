@@ -2,7 +2,7 @@ service: smart-property-search
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.6
   region: ${env:AWS_REGION}
   environment:
     CLIENT_ID: ${env:CLIENT_ID}

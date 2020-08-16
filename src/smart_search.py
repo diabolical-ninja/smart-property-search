@@ -15,7 +15,7 @@ class SmartSearch(DomainListings, Client):
         DomainListings.__init__(self, domain_client_id, domain_client_secret, domain_scopes)
         Client.__init__(self, key = google_maps_key)
 
-    def listing_search(self, search_parameters):
+    def listings_search(self, search_parameters):
         self.search_results = self.retrieve_residential_search_listings(search_parameters)
 
     def calculate_travel_time(self, destination, target_arrival_time=None):

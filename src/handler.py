@@ -22,11 +22,11 @@ def search(event, context):
         smart_filters = data['filters']
 
         # Retrieve initial search results
-        searcher.listing_search(domain_request)
+        searcher.listings_search(domain_request)
 
         # Append results with travel information
-        southern_cross = (-37.818294, 144.952447)
-        searcher.calculate_travel_time(destination=southern_cross)
+        # southern_cross = (-37.818294, 144.952447)
+        # searcher.calculate_travel_time(destination=southern_cross)
 
         response = {
             "statusCode": 200,
@@ -40,7 +40,7 @@ def search(event, context):
         print(ex)
 
         response = {
-            "statusCode": 500,
+            "statusCode": 200,
             "error": json.dumps(str(ex))
         }
 
