@@ -21,6 +21,26 @@ class SmartSearch(DomainListings, Client):
         # Likely a better way to handle this though
         self.search_results = [x for x in results if x['listing'] is not None]
 
+    def filter_by_travel_time(self, max_travel_time, destination, target_arrival_time=None):
+
+        # Convert to seconds
+        max_travel_time_sec = max_travel_time * 60
+
+        # Filter
+        self.calculate_travel_time(destination = destination, target_arrival_time = target_arrival_time)
+        self.search_results = [x for x in self.search_results if 
+            self.travel_time_less_than_threshold(x['travel_info']['duration'], max_travel_time_sec) 
+        ]
+
+    def travel_time_less_than_threshold(self, travel_time, max_travel_time):
+
+        output = False
+        if travel_time != 'No Result':
+            if travel_time <= max_travel_time:
+                output = True
+        
+        return output
+
     def calculate_travel_time(self, destination, target_arrival_time=None):
 
         # Extract location lat/long for each returned property

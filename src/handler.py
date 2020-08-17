@@ -24,9 +24,11 @@ def search(event, context):
         # Retrieve initial search results
         searcher.listings_search(domain_request)
 
-        # Append results with travel information
-        southern_cross = (-37.818294, 144.952447)
-        searcher.calculate_travel_time(destination=southern_cross)
+        # Filter by travel time
+        if 'max_travel_time' in smart_filters.keys():
+            southern_cross = (-37.818294, 144.952447)
+            searcher.filter_by_travel_time(max_travel_time=smart_filters['max_travel_time'],
+                                           destination=southern_cross)
 
         response = {
             "statusCode": 200,
