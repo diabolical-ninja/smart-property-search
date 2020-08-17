@@ -1,6 +1,8 @@
 from googlemaps import Client
 from domain_listings import DomainListings
-from utils import *
+import datetime
+import pytz
+from utils import chunks, extend_dictionary
 
 
 class SmartSearch(DomainListings, Client):
@@ -21,13 +23,13 @@ class SmartSearch(DomainListings, Client):
         # Likely a better way to handle this though
         self.search_results = [x for x in results if x['listing'] is not None]
 
-    def filter_by_travel_time(self, max_travel_time, destination, target_arrival_time=None):
+    def filter_by_travel_time(self, max_travel_time, destination):
 
         # Convert to seconds
         max_travel_time_sec = max_travel_time * 60
 
         # Filter
-        self.calculate_travel_time(destination = destination, target_arrival_time = target_arrival_time)
+        self.calculate_travel_time(destination = destination)
         self.search_results = [x for x in self.search_results if 
             self.travel_time_less_than_threshold(x['travel_info']['duration'], max_travel_time_sec) 
         ]
@@ -41,23 +43,23 @@ class SmartSearch(DomainListings, Client):
         
         return output
 
-    def calculate_travel_time(self, destination, target_arrival_time=None):
+    def calculate_travel_time(self, destination):
 
         # Extract location lat/long for each returned property
         results_lat_long = [(x['listing']['property_details']['latitude'],
                              x['listing']['property_details']['longitude']) for x
                             in self.search_results]
 
-        # Should be autodefined &/or an argument
-        # Consider timezones for Adelaide, Perth, etc
-        target_arrival_time = timestamp_to_epoch('2020-08-13T09:00:00', '+1100')
-
         # Get the travel time for each search result & append (distance, duration)
-        distances = self.get_distances(results_lat_long, destination, target_arrival_time)
+        distances = self.get_distances(results_lat_long, destination)
         self.search_results = [extend_dictionary(x[0], x[1], 'travel_info') for x
                                in zip(self.search_results, distances)]
 
-    def get_distances(self, origins, destination, target_arrival_time, chunk_size=50):
+    def get_distances(self, origins, destination, chunk_size=50):
+
+        # Create next Tuesday
+        # Why Tuesday? Less likely to be a long weekend me thinks?
+        target_arrival_time = self.create_next_day(2).timestamp()
 
         # Get travel information
         distances = []
@@ -76,6 +78,19 @@ class SmartSearch(DomainListings, Client):
                               for x in matrix['rows']])
 
         return distances
+
+    def create_next_day(self, target_day_of_week, target_hour=9, target_minute=0, timezone="Australia/Melbourne"):
+
+        # Create Next Date
+        day = datetime.date.today()
+        diff = target_day_of_week+7 - day.isoweekday()
+
+        # Create Datetime
+        tz = pytz.timezone(timezone)
+        constructed_datetime = datetime.datetime.combine(day+datetime.timedelta(diff),
+                                                         datetime.time(target_hour,target_minute))
+
+        return tz.localize(constructed_datetime)
 
     def extract_distance_duration(self, result):
         """
