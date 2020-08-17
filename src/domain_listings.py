@@ -2,7 +2,7 @@ import requests
 from domainClient import Configuration, ListingsApi, ApiClient
 
 
-class DomainListings(object):
+class DomainListings:
 
     def __init__(self, client_id, client_secret, scopes):
         """[summary]
@@ -64,11 +64,11 @@ class DomainListings(object):
         configuration.access_token = self.auth_info['access_token']
         return ListingsApi(ApiClient(configuration))
 
-    def single_detailed_listing(self, id):
-        return self.listings.listings_get(id)
+    def single_detailed_listing(self, listing_id):
+        return self.listings.listings_get(listing_id)
 
     def retrieve_residential_search_listings(self, data):
-        
+
         # As per docs, search results are limited to the first 1000 results. Max results per search = 1000
         max_results = 1000
         
@@ -89,6 +89,3 @@ class DomainListings(object):
 
         results = [result.to_dict() for result in results]
         return results
-
-
-
