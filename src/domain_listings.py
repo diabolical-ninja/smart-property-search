@@ -71,7 +71,7 @@ class DomainListings:
 
         # As per docs, search results are limited to the first 1000 results. Max results per search = 1000
         max_results = 1000
-        
+
         # Initialise parameters for the search
         data['pageNumber'], data['pageSize'] = 1, 200
         results = []
