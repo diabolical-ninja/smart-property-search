@@ -29,21 +29,52 @@ mv domainClient/domainClient src/domainClient
 sls deploy
 ```
 
-6.  An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
+6. An API will now be available that you can query with different search parameters.
+
+    - `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
+    - `Filters` are additional parameters to filter the results
+
+
+A request will look like:
+```json
+{
+    "domain":{
+        // as per domain docs
+    },
+    "filters":{
+        "travelTime": {
+            "destinationAddress": "<target destination>",
+            "maxTravelTime": 10 //minutes
+        }
+    }
+}
+```
+
+Eg:
 
 ```json
 {
-    "listing_type": "Sale",
-    "minBedrooms": 2,
-    "maxBathrooms": 4,
-    "minCarspaces": 1,
-    "minPrice": 500000,
-    "locations": [{
-        "state": "SA"
-    }],
-    "pageSize": 100
+    "domain": {
+        "listingType": "Sale",
+        "propertyTypes": ["Penthouse","ApartmentUnitFlat"],
+        "minBedrooms": 4,
+        "minBathrooms": 3,
+        "minPrice": 4500000,
+        "locations": [{
+            "state": "VIC",
+            "postcode": "3000"
+        }
+        ]
+    },
+    "filters": {
+       "travelTime": {
+            "destinationAddress": "Spring St, East Melbourne VIC 3002",
+            "maxTravelTime": 20 //minutes
+        }
+    }
 }
 ```
+
 
 7.  Once done, teardown the infrastructure using:
 
