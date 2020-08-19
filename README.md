@@ -4,7 +4,10 @@
 
 Buyer focused property search, with results tailored to your needs rather than the agents.
 
-## Client Usage
+## How to Build & Deploy the API
+Assumes you have:
+- An AWS Account including access & secret keys
+- A Google maps API key
 
 1.  Build Domain client library
 
