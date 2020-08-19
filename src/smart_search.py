@@ -107,7 +107,7 @@ class SmartSearch(DomainListings, Client):
                 'distance': result['distance']['value'],
                 'duration': result['duration']['value']
             }
-        except:
+        except Exception:
             return {
                 'distance': 'No Result',
                 'duration': 'No Result'
