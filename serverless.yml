@@ -2,11 +2,13 @@ service: smart-property-search
 
 provider:
   name: aws
-  runtime: python3.8
+  timeout: 15
+  runtime: python3.6
   region: ${env:AWS_REGION}
   environment:
     CLIENT_ID: ${env:CLIENT_ID}
     CLIENT_SECRET: ${env:CLIENT_SECRET}
+    GOOGLE_MAPS_KEY: ${env:GOOGLE_MAPS_KEY}
 
 functions:
   search:

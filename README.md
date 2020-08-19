@@ -1,10 +1,15 @@
 # Smart Property Search
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f69662f84ff54c2ba386c994dd140eb0)](https://www.codacy.com/manual/yeltahir/smart-property-search?utm_source=github.com&utm_medium=referral&utm_content=diabolical-ninja/smart-property-search&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f69662f84ff54c2ba386c994dd140eb0)](https://www.codacy.com/manual/yeltahir/smart-property-search?utm_source=github.com&utm_medium=referral&utm_content=diabolical-ninja/smart-property-search&utm_campaign=Badge_Grade)      ![Deploy](https://github.com/diabolical-ninja/smart-property-search/workflows/Deploy%20Feature%20Branch/badge.svg)
 
 Buyer focused property search, with results tailored to your needs rather than the agents.
 
-## Client Usage
+## How to Build & Deploy the API
+
+Assumes you have:
+
+-   An AWS Account including access & secret keys
+-   A Google maps API key
 
 1.  Build Domain client library
 
@@ -29,19 +34,49 @@ mv domainClient/domainClient src/domainClient
 sls deploy
 ```
 
-6.  An API will now be up that you can query with different search parameters as per the [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch) docs on domain. Eg:
+6.  An API will now be available that you can query with different search parameters.
+
+    -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
+    -   `Filters` are additional parameters to filter the results
+
+A request will look like:
 
 ```json
 {
-    "listing_type": "Sale",
-    "minBedrooms": 2,
-    "maxBathrooms": 4,
-    "minCarspaces": 1,
-    "minPrice": 500000,
-    "locations": [{
-        "state": "SA"
-    }],
-    "pageSize": 100
+    "domain":{
+        // as per domain docs
+    },
+    "filters":{
+        "travelTime": {
+            "destinationAddress": "<target destination>",
+            "maxTravelTime": 10 //minutes
+        }
+    }
+}
+```
+
+Eg:
+
+```json
+{
+    "domain": {
+        "listingType": "Sale",
+        "propertyTypes": ["Penthouse","ApartmentUnitFlat"],
+        "minBedrooms": 4,
+        "minBathrooms": 3,
+        "minPrice": 4500000,
+        "locations": [{
+            "state": "VIC",
+            "postcode": "3000"
+        }
+        ]
+    },
+    "filters": {
+       "travelTime": {
+            "destinationAddress": "Spring St, East Melbourne VIC 3002",
+            "maxTravelTime": 20 //minutes
+        }
+    }
 }
 ```
 

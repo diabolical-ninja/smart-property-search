@@ -1,32 +1,48 @@
 import json
-from domainClient import Configuration, ListingsApi, ApiClient
-from domain_authentication import get_access_token
+from smart_search import SmartSearch
 from utils import json_serial
 import os
 
 
-# Generate Access Token
+# Instantiate searcher
 scopes = ['api_listings_read', 'api_agencies_read']
-auth_info = get_access_token(os.getenv('CLIENT_ID'),
-                             os.getenv('CLIENT_SECRET'),
-                             scopes)
-
-# Configure Authentication Client
-configuration = Configuration()
-configuration.access_token = auth_info['access_token']
+searcher = SmartSearch(domain_client_id = os.getenv('CLIENT_ID'),
+                       domain_client_secret = os.getenv('CLIENT_SECRET'),
+                       domain_scopes = scopes,
+                       google_maps_key = os.getenv('GOOGLE_MAPS_KEY')
+                       )
 
 
 def search(event, context):
 
-    data = json.loads(event['body'])
+    try:
+        # Extract POST body information
+        data = json.loads(event['body'])
+        domain_request = data['domain']
+        smart_filters = data['filters']
 
-    listings = ListingsApi(ApiClient(configuration))
-    results = listings.listings_detailed_residential_search(data)
-    results = [result.to_dict() for result in results]
+        # Retrieve initial search results
+        searcher.listings_search(domain_request)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(results, default = json_serial)
-    }
+        # Filter by travel time
+        if 'travelTime' in smart_filters.keys():
+            searcher.filter_by_travel_time(max_travel_time = smart_filters['travelTime']['maxTravelTime'],
+                                           destination = smart_filters['travelTime']['destinationAddress'])
 
-    return response
+        response = {
+            "statusCode": 200,
+            "body": json.dumps(searcher.search_results, default = json_serial)
+        }
+
+        return response
+
+    except Exception as ex:
+
+        print(ex)
+
+        response = {
+            "statusCode": 200,
+            "error": json.dumps(str(ex))
+        }
+
+        return response
