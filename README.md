@@ -29,13 +29,13 @@ mv domainClient/domainClient src/domainClient
 sls deploy
 ```
 
-6. An API will now be available that you can query with different search parameters.
+6.  An API will now be available that you can query with different search parameters.
 
-    - `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
-    - `Filters` are additional parameters to filter the results
-
+    -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
+    -   `Filters` are additional parameters to filter the results
 
 A request will look like:
+
 ```json
 {
     "domain":{
@@ -74,7 +74,6 @@ Eg:
     }
 }
 ```
-
 
 7.  Once done, teardown the infrastructure using:
 

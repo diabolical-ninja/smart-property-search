@@ -30,17 +30,19 @@ class SmartSearch(DomainListings, Client):
 
         # Filter
         self.calculate_travel_time(destination = destination)
-        self.search_results = [x for x in self.search_results if 
-            self.travel_time_less_than_threshold(x['travel_info']['duration'], max_travel_time_sec) 
-        ]
+        self.search_results = [x for x in self.search_results if
+                               self.__travel_time_less_than_threshold(
+                                   x['travel_info']['duration'], max_travel_time_sec)
+                               ]
 
-    def travel_time_less_than_threshold(self, travel_time, max_travel_time):
+    @staticmethod
+    def __travel_time_less_than_threshold(travel_time, max_travel_time):
 
         output = False
         if travel_time != 'No Result':
             if travel_time <= max_travel_time:
                 output = True
-        
+
         return output
 
     def calculate_travel_time(self, destination):
@@ -59,7 +61,7 @@ class SmartSearch(DomainListings, Client):
 
         # Create next Tuesday
         # Why Tuesday? Less likely to be a long weekend me thinks?
-        target_arrival_time = self.create_next_day(2).timestamp()
+        target_arrival_time = self.__create_next_day(2).timestamp()
 
         # Get travel information
         distances = []
@@ -74,25 +76,27 @@ class SmartSearch(DomainListings, Client):
                                           arrival_time = target_arrival_time)
 
             # Extract Duration & Distance
-            distances.extend([self.extract_distance_duration(x['elements'][0])
+            distances.extend([self.__extract_distance_duration(x['elements'][0])
                               for x in matrix['rows']])
 
         return distances
 
-    def create_next_day(self, target_day_of_week, target_hour=9, target_minute=0, timezone="Australia/Melbourne"):
+    @staticmethod
+    def __create_next_day(target_day_of_week, target_hour=9, target_minute=0, timezone="Australia/Melbourne"):
 
         # Create Next Date
         day = datetime.date.today()
-        diff = target_day_of_week+7 - day.isoweekday()
+        diff = target_day_of_week + 7 - day.isoweekday()
 
         # Create Datetime
         tz = pytz.timezone(timezone)
-        constructed_datetime = datetime.datetime.combine(day+datetime.timedelta(diff),
-                                                         datetime.time(target_hour,target_minute))
+        constructed_datetime = datetime.datetime.combine(day + datetime.timedelta(diff),
+                                                         datetime.time(target_hour, target_minute))
 
         return tz.localize(constructed_datetime)
 
-    def extract_distance_duration(self, result):
+    @staticmethod
+    def __extract_distance_duration(result):
         """
         Distance: Metres
         Duration: Seconds

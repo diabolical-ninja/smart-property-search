@@ -76,7 +76,7 @@ class DomainListings:
         data['pageNumber'], data['pageSize'] = 1, 200
         results = []
         response_length = 1
-        
+
         while (data['pageNumber'] * data['pageSize'] <= max_results) and \
               (response_length != 0):
 
