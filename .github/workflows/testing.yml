@@ -19,4 +19,8 @@ jobs:
           echo "| --- | --- | --- | --- |  --- |" >> linting_report.md
           nox >> linting_report.md
           sed -i -e 's/$/    /' linting_report.md
-      
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: linting_report.md
