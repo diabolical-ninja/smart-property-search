@@ -14,4 +14,4 @@ def lint(session):
         "flake8-requirements",
         "pep8-naming",
     )
-    session.run("flake8", "src/utils.py")
+    session.run("flake8", "src/")
