@@ -3,6 +3,7 @@
 .serverless/
 node_modules/
 scratchpad.py
+thougts.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
