@@ -21,8 +21,8 @@ jobs:
           sed -i -e 's/$/    /' linting_report.md
       - name: Save Linting Report
         if: ${{ failure() }}
-        uses: harupy/comment-on-pr@master
+        uses: machine-learning-apps/pr-comment@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: linting_report.md
+          path: linting_report.md
