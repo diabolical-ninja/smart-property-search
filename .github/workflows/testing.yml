@@ -12,13 +12,14 @@ jobs:
         with:
           python-version: '3.6'
       - run: pip install nox
-      - name: Run linting
+      - name: Run Linting
         run: |
           echo "# Linting Issues" > linting_report.md
           echo "| Path | Row | Col | Code | Msg |" >> linting_report.md
           echo "| --- | --- | --- | --- |  --- |" >> linting_report.md
           nox >> linting_report.md
           sed -i -e 's/$/    /' linting_report.md
+      - name: Save Linting Report
       - uses: harupy/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
