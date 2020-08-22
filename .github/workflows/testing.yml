@@ -20,7 +20,8 @@ jobs:
           nox >> linting_report.md
           sed -i -e 's/$/    /' linting_report.md
       - name: Save Linting Report
-      - uses: harupy/comment-on-pr@master
+        if: ${{ failure() }}
+        uses: harupy/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
