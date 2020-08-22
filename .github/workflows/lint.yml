@@ -15,7 +15,7 @@ jobs:
           echo "# Linting Issues" > linting_report.md
           echo "| Path | Row | Col | Code | Msg |" >> linting_report.md
           echo "| --- | --- | --- | --- |  --- |" >> linting_report.md
-          nox >> linting_report.md
+          nox --sessions lint >> linting_report.md
           sed -i -e 's/$/    /' linting_report.md
       - name: Save Linting Report
         if: ${{ failure() }}
