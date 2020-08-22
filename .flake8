@@ -2,5 +2,5 @@
 select=C,E,F,W,D,I,ANN,N,Q,DAR
 docstring-convention=google
 max-line-length = 100
-format = | %(path)s | %(row)d | c:%(col)d | %(code)s | %(text)s |
+format = | %(path)s | %(row)d | %(col)d | %(code)s | %(text)s |
 inline-quotes = "

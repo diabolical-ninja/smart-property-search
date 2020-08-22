@@ -1,11 +1,9 @@
-name: PR Comment Testing
+name: Linting Verification
 
 on: pull_request
 jobs:
   comment:
-    name: Add checkout commands
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-python@v2
