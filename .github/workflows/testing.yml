@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.6'
       - run: pip install nox
@@ -18,8 +18,10 @@ jobs:
           echo "| --- | --- | --- | --- |  --- |" >> linting_report.md
           nox >> linting_report.md
           sed -i -e 's/$/    /' linting_report.md
+      
+      - name: Comment on pull request
       - uses: harupy/comment-on-pr@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            filename: linting_report.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: linting_report.md
