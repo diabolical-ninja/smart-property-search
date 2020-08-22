@@ -8,5 +8,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.6'
       - run: pip install nox
       - run: nox
