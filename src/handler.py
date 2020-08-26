@@ -4,6 +4,7 @@ import json
 import os
 
 from smart_search import SmartSearch
+
 from utils import json_serial
 
 
