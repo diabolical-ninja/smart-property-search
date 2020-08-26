@@ -1,0 +1,26 @@
+name: Linting Verification
+
+on: pull_request
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - run: pip install nox
+      - name: Run Linting
+        run: |
+          echo "# Linting Issues" > linting_report.md
+          echo "| Path | Row | Col | Code | Msg |" >> linting_report.md
+          echo "| --- | --- | --- | --- |  --- |" >> linting_report.md
+          nox --sessions lint >> linting_report.md
+          sed -i -e 's/$/    /' linting_report.md
+      - name: Save Linting Report
+        if: ${{ failure() }}
+        uses: machine-learning-apps/pr-comment@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          path: linting_report.md
