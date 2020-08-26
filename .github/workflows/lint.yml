@@ -1,4 +1,4 @@
-name: Linting Verification
+name: Linting
 
 on: pull_request
 jobs:
