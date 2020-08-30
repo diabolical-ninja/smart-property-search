@@ -15,7 +15,7 @@ features:
       - heating
       - heater
       - heat
-  Outdoors:
+  Outside:
     domain:
       - BalconyDeck
       - GardenCourtyard
