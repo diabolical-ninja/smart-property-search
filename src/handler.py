@@ -45,6 +45,10 @@ def search(event: dict, context: object) -> dict:
                 destination=smart_filters["travelTime"]["destinationAddress"],
             )
 
+        # Filter by desired features
+        if "features" in smart_filters["filters"] and len(smart_filters["filters"]["features"]) > 0:
+            searcher.filter_by_attribute(smart_filters["filters"]["features"])
+
         response = {
             "statusCode": 200,
             "body": json.dumps(searcher.search_results, default=json_serial),
