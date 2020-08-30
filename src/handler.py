@@ -46,8 +46,8 @@ def search(event: dict, context: object) -> dict:
             )
 
         # Filter by desired features
-        if "features" in smart_filters["filters"] and len(smart_filters["filters"]["features"]) > 0:
-            searcher.filter_by_attribute(smart_filters["filters"]["features"])
+        if "features" in smart_filters and len(smart_filters["features"]) > 0:
+            searcher.filter_by_attribute(smart_filters["features"])
 
         response = {
             "statusCode": 200,
