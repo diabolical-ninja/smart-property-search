@@ -1,9 +1,6 @@
 name: Deploy Feature Branch
 
-on:
-  push:
-    branches:
-      - feature/initial-search-filter
+on: pull_request
 
 jobs:
   deploy:

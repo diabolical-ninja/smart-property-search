@@ -1,6 +1,6 @@
 # Smart Property Search
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f69662f84ff54c2ba386c994dd140eb0)](https://www.codacy.com/manual/yeltahir/smart-property-search?utm_source=github.com&utm_medium=referral&utm_content=diabolical-ninja/smart-property-search&utm_campaign=Badge_Grade)      ![Deploy](https://github.com/diabolical-ninja/smart-property-search/workflows/Deploy%20Feature%20Branch/badge.svg)
+![Linting](https://github.com/diabolical-ninja/smart-property-search/workflows/Linting/badge.svg) ![Deploy](https://github.com/diabolical-ninja/smart-property-search/workflows/Deploy%20Feature%20Branch/badge.svg)
 
 Buyer focused property search, with results tailored to your needs rather than the agents.
 
@@ -37,7 +37,7 @@ sls deploy
 6.  An API will now be available that you can query with different search parameters.
 
     -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
-    -   `Filters` are additional parameters to filter the results
+    -   `Filters` are (optional) additional parameters to filter the results
 
 A request will look like:
 
@@ -50,7 +50,8 @@ A request will look like:
         "travelTime": {
             "destinationAddress": "<target destination>",
             "maxTravelTime": 10 //minutes
-        }
+        },
+        "features":["<keys from feature_parameters.yml>", ]
     }
 }
 ```
@@ -76,7 +77,8 @@ Eg:
             "destinationAddress": "Spring St, East Melbourne VIC 3002",
             "maxTravelTime": 20 //minutes
         }
-    }
+    },
+    "features":["AirConditioning", "Outside"]
 }
 ```
 

@@ -1,6 +1,7 @@
 """Main class for searching & filtering functionality."""
 
 import datetime
+from itertools import compress
 
 from domain_listings import DomainListings
 
@@ -9,6 +10,8 @@ from googlemaps import Client
 import pytz
 
 from utils import chunks, extend_dictionary
+
+from yaml import safe_load
 
 
 class SmartSearch(DomainListings, Client):
@@ -40,6 +43,7 @@ class SmartSearch(DomainListings, Client):
             self, domain_client_id, domain_client_secret, domain_scopes
         )
         Client.__init__(self, key=google_maps_key)
+        self.filter_parameters = safe_load(open("filter_parameters.yml"))
 
     def listings_search(self, search_parameters: dict) -> None:
         """Retrieves listings based on initial search parameters.
@@ -107,7 +111,9 @@ class SmartSearch(DomainListings, Client):
             for x in zip(self.search_results, distances)
         ]
 
-    def get_distances(self, origins: list, destination: str, chunk_size: int = 50) -> list:
+    def get_distances(
+        self, origins: list, destination: str, chunk_size: int = 50
+    ) -> list:
         """Gets travel time & distance from Google.
 
         Args:
@@ -201,3 +207,76 @@ class SmartSearch(DomainListings, Client):
             }
         except Exception:
             return {"distance": "No Result", "duration": "No Result"}
+
+    def filter_by_attribute(self, wanted_attributes: list) -> None:
+        """Filter listings based off desired attributes.
+
+        Args:
+            wanted_attributes (list): Key for each attribute search
+        """
+        satisfies_search = list()
+
+        # For each property, get detailed listing, filter & return true/false
+        for result in self.search_results:
+
+            # Get detailed listing
+            detailed_listing = self.single_detailed_listing(result["listing"]["id"])
+
+            # Run through search filter
+            satisfies_search.append(
+                all(
+                    self.has_feature(
+                        search_features=self.filter_parameters["features"][feature][
+                            "domain"
+                        ],
+                        feature_search_words=self.filter_parameters["features"][
+                            feature
+                        ]["desc"],
+                        property_details_features=result["listing"]["property_details"][
+                            "features"
+                        ],
+                        property_description=detailed_listing["description"],
+                    )
+                    for feature in self.filter_parameters["features"]
+                    if feature in wanted_attributes
+                )
+            )
+
+        # Apply filter
+        self.search_results = list(compress(self.search_results, satisfies_search))
+
+    @staticmethod
+    def has_feature(
+        search_features: list,
+        feature_search_words: list,
+        property_details_features: list,
+        property_description: str
+    ) -> bool:
+        """Determines whether a feature is present in a listing.
+
+        Checking is niave ATM where by it checks for one of:
+            - Does the listing have that attribute tagged
+            - Do any of the keywords exist in the description
+
+        Args:
+            search_features (list): Desired features as tagged in the listing "propertyFeatures".
+            feature_search_words (list): Feature terms to search for in the description.
+            property_details_features (list): The listings "propertyFeatures".
+            property_description (str): The listings description.
+
+        Returns:
+            bool: Flag indicating if the feature is present
+        """
+        attribute_in_features = any(
+            feature in property_details_features for feature in search_features
+        )
+
+        # Test if attribute listed elsewhere
+        attribute_in_description = any(
+            val in property_description.lower() for val in feature_search_words
+        )
+
+        if attribute_in_features or attribute_in_description:
+            return True
+        else:
+            return False

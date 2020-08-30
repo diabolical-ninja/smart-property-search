@@ -1,0 +1,32 @@
+features:
+  AirConditioning:
+    domain: 
+      - AirConditioning
+    desc: 
+      - air conditioning
+      - a/c
+      - aircon
+      - cooling
+      - airconditioning
+  Heating:
+    domain:
+      - Heating
+    desc:
+      - heating
+      - heater
+      - heat
+  Outside:
+    domain:
+      - BalconyDeck
+      - GardenCourtyard
+    desc:
+      - yard
+      - balcony
+      - deck
+  Dishwasher:
+    domain:
+      - Dishwasher
+    desc:
+      - dishwasher
+      - dish washer
+      - dish

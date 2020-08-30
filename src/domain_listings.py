@@ -78,7 +78,7 @@ class DomainListings:
         Returns:
             dict: Detailed property listing information
         """
-        return self.listings.listings_get(listing_id)
+        return self.listings.listings_get(listing_id).to_dict()
 
     def retrieve_residential_search_listings(self, data: dict) -> list:
         """Iterative retrieval of property listings based on search criteria.
