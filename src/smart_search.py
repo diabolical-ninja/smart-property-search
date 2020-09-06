@@ -7,6 +7,8 @@ from domain_listings import DomainListings
 
 from googlemaps import Client
 
+from nbn import NBN
+
 import pytz
 
 from utils import chunks, extend_dictionary
@@ -14,7 +16,7 @@ from utils import chunks, extend_dictionary
 from yaml import safe_load
 
 
-class SmartSearch(DomainListings, Client):
+class SmartSearch(DomainListings, Client, NBN):
     """Main class for searching & filtering functionality.
 
     Args:
@@ -39,6 +41,7 @@ class SmartSearch(DomainListings, Client):
             google_maps_key (str): API key for google maps
         """
 
+        NBN.__init__(self)
         DomainListings.__init__(
             self, domain_client_id, domain_client_secret, domain_scopes
         )
@@ -72,13 +75,13 @@ class SmartSearch(DomainListings, Client):
         self.search_results = [
             x
             for x in self.search_results
-            if self.__travel_time_less_than_threshold(
+            if self._travel_time_less_than_threshold(
                 x["travel_info"]["duration"], max_travel_time_sec
             )
         ]
 
     @staticmethod
-    def __travel_time_less_than_threshold(
+    def _travel_time_less_than_threshold(
         travel_time: int, max_travel_time: int
     ) -> bool:
 
@@ -127,7 +130,7 @@ class SmartSearch(DomainListings, Client):
         """
         # Create next Tuesday
         # Why Tuesday? Less likely to be a long weekend me thinks?
-        target_arrival_time = self.__create_next_day(2).timestamp()
+        target_arrival_time = self._create_next_day(2).timestamp()
 
         # Get travel information
         distances = []
@@ -146,7 +149,7 @@ class SmartSearch(DomainListings, Client):
             # Extract Duration & Distance
             distances.extend(
                 [
-                    self.__extract_distance_duration(x["elements"][0])
+                    self._extract_distance_duration(x["elements"][0])
                     for x in matrix["rows"]
                 ]
             )
@@ -154,7 +157,7 @@ class SmartSearch(DomainListings, Client):
         return distances
 
     @staticmethod
-    def __create_next_day(
+    def _create_next_day(
         target_day_of_week: int,
         target_hour: int = 9,
         target_minute: int = 0,
@@ -189,7 +192,7 @@ class SmartSearch(DomainListings, Client):
         return tz.localize(constructed_datetime)
 
     @staticmethod
-    def __extract_distance_duration(result: dict) -> dict:
+    def _extract_distance_duration(result: dict) -> dict:
         """Extract distance & duration from gmaps distance object.
 
         Args:
@@ -225,7 +228,7 @@ class SmartSearch(DomainListings, Client):
             # Run through search filter
             satisfies_search.append(
                 all(
-                    self.has_feature(
+                    self._has_feature(
                         search_features=self.filter_parameters["features"][feature][
                             "domain"
                         ],
@@ -246,11 +249,11 @@ class SmartSearch(DomainListings, Client):
         self.search_results = list(compress(self.search_results, satisfies_search))
 
     @staticmethod
-    def has_feature(
+    def _has_feature(
         search_features: list,
         feature_search_words: list,
         property_details_features: list,
-        property_description: str
+        property_description: str,
     ) -> bool:
         """Determines whether a feature is present in a listing.
 
@@ -280,3 +283,76 @@ class SmartSearch(DomainListings, Client):
             return True
         else:
             return False
+
+    def filter_nbn(self, desired_technology_types: list = []) -> None:
+        """Filter listings based on NBN requirements.
+
+        Args:
+            desired_technology_types (list, optional): NBN technologies such as FTTP, FTTN, etc.
+                                                Defaults to [].
+        """
+        # Attach NBN info to each property
+        listings_and_nbn = [self._append_nbn(x) for x in self.search_results]
+
+        # Assess NBN type
+        has_nbn = [
+            self._has_desired_nbn(x, desired_technology_types) for x in listings_and_nbn
+        ]
+
+        # Apply filter
+        self.search_results = list(compress(listings_and_nbn, has_nbn))
+
+    def _append_nbn(self, listing: dict) -> dict:
+        """Retrieves & attaches NBN information to a listing.
+
+        Args:
+            listing (dict): Domain object with listing information.
+
+        Returns:
+            dict: Original listing with NBN attributes attached.
+        """
+        # Get NBN location & avaiable technology
+        address_for_searching = (
+            f"{listing['listing']['property_details']['displayable_address']}, "
+            f"{listing['listing']['property_details']['state']}"
+        )
+        possible_locations = self.get_location_ids_from_address(address_for_searching)
+
+        # Assume first result is the associated address. This could DEFINITELY be smarter
+        listing["nbn_details"] = {}
+        if len(possible_locations["suggestions"]) > 0:
+            listing["nbn_details"] = self.location_information(
+                possible_locations["suggestions"][0]["id"]
+            )
+        return listing
+
+    @staticmethod
+    def _has_desired_nbn(listing: dict, desired_technology_types: list = []) -> bool:
+        """Determine whether listing has desied NBN based on available information.
+
+        Information on available technology types at:
+            https://www.nbnco.com.au/learn/network-technology
+
+        Args:
+            listing (dict): Listing object from domain
+            desired_technology_types (list, optional): NBN technologies such as FTTP, FTTN, etc.
+                                                         Defaults to [].
+
+        Returns:
+            bool: Flag indicating is the listing has appropriate NBN
+        """
+        # No NBN result
+        if len(listing["nbn_details"].keys()) == 0:
+            return False
+        else:
+            # NBN requested but not specific on the type
+            if len(desired_technology_types) == 0:
+                return True
+            # Check for desired techtype
+            elif (
+                listing["nbn_details"]["servingArea"]["techType"]
+                in desired_technology_types
+            ):
+                return True
+            else:
+                return False

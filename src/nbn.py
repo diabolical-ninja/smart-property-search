@@ -5,7 +5,6 @@ from requests import get
 
 class NBN:
     """Interacts with NBN's unofficial API."""
-
     def __init__(self):
         """Sets base values required for API calls."""
         self.base_url = "https://places.nbnco.net.au/places"
