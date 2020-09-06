@@ -7,7 +7,7 @@ class NBN:
     """Interacts with NBN's unofficial API."""
     def __init__(self):
         """Sets base values required for API calls."""
-        self.base_url = "https://places.nbnco.net.au/places"
+        self.nbn_base_url = "https://places.nbnco.net.au/places"
         self.headers = {
             "Referer": "https://www2.nbnco.com.au/residential/learn/rollout-map"
         }
@@ -24,7 +24,7 @@ class NBN:
         Returns:
             dict: Locations & their ID's for addresses near the lat/long pairs
         """
-        url = f"{self.base_url}/v1/nearby"
+        url = f"{self.nbn_base_url}/v1/nearby"
 
         params = {"lat": latitude, "lng": longitude, "source": "website_rollout_map"}
 
@@ -41,7 +41,7 @@ class NBN:
         Returns:
             dict: Information regarding the connection details & type
         """
-        url = f"{self.base_url}/v2/details/{location_id}"
+        url = f"{self.nbn_base_url}/v2/details/{location_id}"
 
         params = {"source": "website_rollout_map"}
 
@@ -61,12 +61,12 @@ class NBN:
             dict: Locations & their ID's the address
         """
         try:
-            url = f"{self.base_url}/v1/autocomplete"
+            url = f"{self.nbn_base_url}/v1/autocomplete"
 
             params = {"query": address}
 
             response = get(url=url, params=params, headers=self.headers)
-            
+
             print("## get_location_ids_from_address")
             print(url)
             print(response.url)
