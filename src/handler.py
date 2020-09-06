@@ -51,6 +51,7 @@ def search(event: dict, context: object) -> dict:
 
         # Filter by NBN requirements
         if "nbn" in smart_filters:
+            print(smart_filters["nbn"])
             searcher.filter_nbn(smart_filters["nbn"])
 
         response = {

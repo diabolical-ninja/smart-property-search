@@ -291,16 +291,20 @@ class SmartSearch(DomainListings, Client, NBN):
             desired_technology_types (list, optional): NBN technologies such as FTTP, FTTN, etc.
                                                 Defaults to [].
         """
-        # Attach NBN info to each property
-        listings_and_nbn = [self._append_nbn(x) for x in self.search_results]
+        try:
+            # Attach NBN info to each property
+            listings_and_nbn = [self._append_nbn(x) for x in self.search_results]
 
-        # Assess NBN type
-        has_nbn = [
-            self._has_desired_nbn(x, desired_technology_types) for x in listings_and_nbn
-        ]
+            # Assess NBN type
+            has_nbn = [
+                self._has_desired_nbn(x, desired_technology_types) for x in listings_and_nbn
+            ]
 
-        # Apply filter
-        self.search_results = list(compress(listings_and_nbn, has_nbn))
+            # Apply filter
+            self.search_results = list(compress(listings_and_nbn, has_nbn))
+        except Exception as ex:
+            print(ex)
+            print(desired_technology_types)
 
     def _append_nbn(self, listing: dict) -> dict:
         """Retrieves & attaches NBN information to a listing.
@@ -311,20 +315,24 @@ class SmartSearch(DomainListings, Client, NBN):
         Returns:
             dict: Original listing with NBN attributes attached.
         """
-        # Get NBN location & avaiable technology
-        address_for_searching = (
-            f"{listing['listing']['property_details']['displayable_address']}, "
-            f"{listing['listing']['property_details']['state']}"
-        )
-        possible_locations = self.get_location_ids_from_address(address_for_searching)
-
-        # Assume first result is the associated address. This could DEFINITELY be smarter
-        listing["nbn_details"] = {}
-        if len(possible_locations["suggestions"]) > 0:
-            listing["nbn_details"] = self.location_information(
-                possible_locations["suggestions"][0]["id"]
+        try:
+            # Get NBN location & avaiable technology
+            address_for_searching = (
+                f"{listing['listing']['property_details']['displayable_address']}, "
+                f"{listing['listing']['property_details']['state']}"
             )
-        return listing
+            possible_locations = self.get_location_ids_from_address(address_for_searching)
+
+            # Assume first result is the associated address. This could DEFINITELY be smarter
+            listing["nbn_details"] = {}
+            if len(possible_locations["suggestions"]) > 0:
+                listing["nbn_details"] = self.location_information(
+                    possible_locations["suggestions"][0]["id"]
+                )
+            return listing
+        except Exception as ex:
+            print(ex):
+            print(listing)
 
     @staticmethod
     def _has_desired_nbn(listing: dict, desired_technology_types: list = []) -> bool:
@@ -341,18 +349,23 @@ class SmartSearch(DomainListings, Client, NBN):
         Returns:
             bool: Flag indicating is the listing has appropriate NBN
         """
-        # No NBN result
-        if len(listing["nbn_details"].keys()) == 0:
-            return False
-        else:
-            # NBN requested but not specific on the type
-            if len(desired_technology_types) == 0:
-                return True
-            # Check for desired techtype
-            elif (
-                listing["nbn_details"]["servingArea"]["techType"]
-                in desired_technology_types
-            ):
-                return True
-            else:
+        try:
+            # No NBN result
+            if len(listing["nbn_details"].keys()) == 0:
                 return False
+            else:
+                # NBN requested but not specific on the type
+                if len(desired_technology_types) == 0:
+                    return True
+                # Check for desired techtype
+                elif (
+                    listing["nbn_details"]["servingArea"]["techType"]
+                    in desired_technology_types
+                ):
+                    return True
+                else:
+                    return False
+        except Exception as ex:
+            print(ex)
+            print(desired_technology_types)
+            print(listing)
