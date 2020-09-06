@@ -66,7 +66,10 @@ class NBN:
             params = {"query": address}
 
             response = get(url=url, params=params, headers=self.headers)
+            
             print("## get_location_ids_from_address")
+            print(url)
+            print(response.url)
             print(response.status_code)
             print(response.text)
             print(response.content)
