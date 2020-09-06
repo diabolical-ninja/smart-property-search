@@ -306,6 +306,7 @@ class SmartSearch(DomainListings, Client, NBN):
             print("## filter_nbnA")
             print(ex)
             print(desired_technology_types)
+            raise
 
     def _append_nbn(self, listing: dict) -> dict:
         """Retrieves & attaches NBN information to a listing.
@@ -335,6 +336,7 @@ class SmartSearch(DomainListings, Client, NBN):
             print("## _append_nbn")
             print(ex)
             print(listing)
+            raise
 
     @staticmethod
     def _has_desired_nbn(listing: dict, desired_technology_types: list = []) -> bool:
@@ -372,3 +374,4 @@ class SmartSearch(DomainListings, Client, NBN):
             print(ex)
             print(desired_technology_types)
             print(listing)
+            raise
