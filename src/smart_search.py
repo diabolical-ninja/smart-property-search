@@ -303,6 +303,7 @@ class SmartSearch(DomainListings, Client, NBN):
             # Apply filter
             self.search_results = list(compress(listings_and_nbn, has_nbn))
         except Exception as ex:
+            print("## filter_nbnA")
             print(ex)
             print(desired_technology_types)
 
@@ -331,6 +332,7 @@ class SmartSearch(DomainListings, Client, NBN):
                 )
             return listing
         except Exception as ex:
+            print("## _append_nbn")
             print(ex):
             print(listing)
 
@@ -366,6 +368,7 @@ class SmartSearch(DomainListings, Client, NBN):
                 else:
                     return False
         except Exception as ex:
+            print("## _has_desired_nbn")
             print(ex)
             print(desired_technology_types)
             print(listing)
