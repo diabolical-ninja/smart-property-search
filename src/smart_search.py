@@ -303,7 +303,7 @@ class SmartSearch(DomainListings, Client, NBN):
             # Apply filter
             self.search_results = list(compress(listings_and_nbn, has_nbn))
         except Exception as ex:
-            print("## filter_nbnA")
+            print("## filter_nbn")
             print(ex)
             print(desired_technology_types)
             raise
@@ -323,14 +323,19 @@ class SmartSearch(DomainListings, Client, NBN):
                 f"{listing['listing']['property_details']['displayable_address']}, "
                 f"{listing['listing']['property_details']['state']}"
             )
+            print(address_for_searching)
             possible_locations = self.get_location_ids_from_address(address_for_searching)
+
+            print(possible_locations)
 
             # Assume first result is the associated address. This could DEFINITELY be smarter
             listing["nbn_details"] = {}
+            print(listing)
             if len(possible_locations["suggestions"]) > 0:
                 listing["nbn_details"] = self.location_information(
                     possible_locations["suggestions"][0]["id"]
                 )
+            print(listing)
             return listing
         except Exception as ex:
             print("## _append_nbn")
