@@ -60,21 +60,10 @@ class NBN:
         Returns:
             dict: Locations & their ID's the address
         """
-        try:
-            url = f"{self.nbn_base_url}/v1/autocomplete"
+        url = f"{self.nbn_base_url}/v1/autocomplete"
 
-            params = {"query": address}
+        params = {"query": address}
 
-            response = get(url=url, params=params, headers=self.headers)
+        response = get(url=url, params=params, headers=self.headers)
 
-            print("## get_location_ids_from_address")
-            print(url)
-            print(response.url)
-            print(response.status_code)
-            print(response.text)
-            print(response.content)
-
-            return response.json()
-        except Exception as ex:
-            print(ex)
-            raise
+        return response.json()
