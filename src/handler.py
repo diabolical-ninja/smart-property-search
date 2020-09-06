@@ -39,7 +39,7 @@ def search(event: dict, context: object) -> dict:
         searcher.listings_search(domain_request)
 
         # Filter by travel time
-        if "travelTime" in smart_filters.keys():
+        if "travelTime" in smart_filters:
             searcher.filter_by_travel_time(
                 max_travel_time=smart_filters["travelTime"]["maxTravelTime"],
                 destination=smart_filters["travelTime"]["destinationAddress"],
@@ -49,9 +49,13 @@ def search(event: dict, context: object) -> dict:
         if "features" in smart_filters and len(smart_filters["features"]) > 0:
             searcher.filter_by_attribute(smart_filters["features"])
 
+        # Filter by NBN requirements
+        if "nbn" in smart_filters:
+            searcher.filter_nbn(smart_filters["nbn"])
+
         response = {
             "statusCode": 200,
-            "body": json.dumps(searcher.search_results, default=json_serial),
+            "body": json.dumps(searcher.search_results, default=json_serial)
         }
 
         return response
