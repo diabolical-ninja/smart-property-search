@@ -55,7 +55,7 @@ def search(event: dict, context: object) -> dict:
 
         response = {
             "statusCode": 200,
-            "body": json.dumps(searcher.search_results, default=json_serial),
+            "body": json.dumps(searcher.search_results, default=json_serial)
         }
 
         return response
