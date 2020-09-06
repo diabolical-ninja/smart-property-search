@@ -333,7 +333,7 @@ class SmartSearch(DomainListings, Client, NBN):
             return listing
         except Exception as ex:
             print("## _append_nbn")
-            print(ex):
+            print(ex)
             print(listing)
 
     @staticmethod
