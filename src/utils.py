@@ -4,8 +4,6 @@ import logging
 import typing
 from datetime import date, datetime
 
-LOGGER = logging.getLogger(__name__)
-
 
 def json_serial(obj: typing.Any) -> typing.Any:
     """JSON serializer for objects not serialisable by default json code.
@@ -22,7 +20,8 @@ def json_serial(obj: typing.Any) -> typing.Any:
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
 
-    LOGGER.error("Type %s not serialisable" % type(obj))
+    logger = logging.getLogger(__name__)
+    logger.error("Type %s not serialisable" % type(obj))
     raise TypeError("Type %s not serialisable" % type(obj))
 
 
