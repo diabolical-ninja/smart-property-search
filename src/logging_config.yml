@@ -15,3 +15,7 @@ loggers:
   standard:
     level: DEBUG
     handlers: [console]
+
+root:
+  level: INFO
+  handlers: [console]
