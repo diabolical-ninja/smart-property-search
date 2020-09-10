@@ -1,5 +1,7 @@
 """Wrapper class to authenticate & access listings methods."""
 
+import logging
+
 import requests
 
 from domainClient import ApiClient, Configuration, ListingsApi  # noqa
@@ -16,6 +18,7 @@ class DomainListings:
             scopes (list): Desired scope(s) to provide authentication for
                            Required scopes provided in: https://developer.domain.com.au/docs/apis
         """
+        self.LOGGER = logging.getLogger(__name__)
         self.client_id = client_id
         self.client_secret = client_secret
         self.scopes = scopes
@@ -53,9 +56,11 @@ class DomainListings:
                 auth=(self.client_id, self.client_secret),
             )
 
+            self.LOGGER.debug(response.__dict__)
             return response.json()
 
         except Exception as ex:
+            self.LOGGER.error(ex)
             raise Exception(ex)
 
     def create_listings_client(self) -> ListingsApi:

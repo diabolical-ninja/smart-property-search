@@ -1,5 +1,7 @@
 """Client for the unofficial NBN API."""
 
+import logging
+
 from requests import get
 
 
@@ -7,6 +9,7 @@ class NBN:
     """Interacts with NBN's unofficial API."""
     def __init__(self):
         """Sets base values required for API calls."""
+        self.LOGGER = logging.getLogger(__name__)
         self.nbn_base_url = "https://places.nbnco.net.au/places"
         self.headers = {
             "Referer": "https://www2.nbnco.com.au/residential/learn/rollout-map"
@@ -29,6 +32,7 @@ class NBN:
         params = {"lat": latitude, "lng": longitude, "source": "website_rollout_map"}
 
         response = get(url=url, params=params, headers=self.headers)
+        self.LOGGER.debug(response.__dict__)
 
         return response.json()
 
@@ -46,6 +50,7 @@ class NBN:
         params = {"source": "website_rollout_map"}
 
         response = get(url=url, params=params, headers=self.headers)
+        self.LOGGER.debug(response.__dict__)
 
         return response.json()
 
@@ -65,5 +70,6 @@ class NBN:
         params = {"query": address}
 
         response = get(url=url, params=params, headers=self.headers)
+        self.LOGGER.debug(response.__dict__)
 
         return response.json()
