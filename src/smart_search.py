@@ -41,7 +41,7 @@ class SmartSearch(DomainListings, Client, NBN):
                                   Required scopes provided in: https://developer.domain.com.au/docs/apis   # noqa
             google_maps_key (str): API key for google maps
         """
-        self.LOGGER = logging.getLogger('standard')
+        self.LOGGER = logging.getLogger("standard")
         NBN.__init__(self)
         DomainListings.__init__(
             self, domain_client_id, domain_client_secret, domain_scopes
