@@ -3,9 +3,14 @@
 import json
 import os
 
+from logging_setup import configure_logger
+
 from smart_search import SmartSearch
 
 from utils import json_serial
+
+# Instantiate Logger as per config
+LOGGER = configure_logger()
 
 
 # Instantiate searcher
@@ -31,27 +36,36 @@ def search(event: dict, context: object) -> dict:
     """
     try:
         # Extract POST body information
+        LOGGER.info("Extract request body from API payload")
         data = json.loads(event["body"])
         domain_request = data["domain"]
         smart_filters = data["filters"]
 
         # Retrieve initial search results
+        LOGGER.info("Retrieve unfiltered search results")
         searcher.listings_search(domain_request)
+        LOGGER.info("Retrieve unfiltered search results...Done")
 
         # Filter by travel time
         if "travelTime" in smart_filters:
+            LOGGER.info("Filtering by travel time")
             searcher.filter_by_travel_time(
                 max_travel_time=smart_filters["travelTime"]["maxTravelTime"],
                 destination=smart_filters["travelTime"]["destinationAddress"],
             )
+            LOGGER.info("Filtering by travel time...Done")
 
         # Filter by desired features
         if "features" in smart_filters and len(smart_filters["features"]) > 0:
+            LOGGER.info("Filtering by smart features")
             searcher.filter_by_attribute(smart_filters["features"])
+            LOGGER.info("Filtering by smart features...Done")
 
         # Filter by NBN requirements
         if "nbn" in smart_filters:
+            LOGGER.info("Filtering by NBN requirements")
             searcher.filter_nbn(smart_filters["nbn"])
+            LOGGER.info("Filtering by NBN requirements...Done")
 
         response = {
             "statusCode": 200,
@@ -62,7 +76,7 @@ def search(event: dict, context: object) -> dict:
 
     except Exception as ex:
 
-        print(ex)
+        LOGGER.error(ex, exc_info=True)
 
         response = {"statusCode": 200, "error": json.dumps(str(ex))}
 

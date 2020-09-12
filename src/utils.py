@@ -1,5 +1,6 @@
 """General utility functions."""
 
+import logging
 import typing
 from datetime import date, datetime
 
@@ -18,6 +19,9 @@ def json_serial(obj: typing.Any) -> typing.Any:
     """
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
+
+    logger = logging.getLogger("standard")
+    logger.error("Type %s not serialisable" % type(obj))
     raise TypeError("Type %s not serialisable" % type(obj))
 
 

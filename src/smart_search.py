@@ -1,6 +1,7 @@
 """Main class for searching & filtering functionality."""
 
 import datetime
+import logging
 from itertools import compress
 
 from domain_listings import DomainListings
@@ -40,7 +41,7 @@ class SmartSearch(DomainListings, Client, NBN):
                                   Required scopes provided in: https://developer.domain.com.au/docs/apis   # noqa
             google_maps_key (str): API key for google maps
         """
-
+        self.LOGGER = logging.getLogger("standard")
         NBN.__init__(self)
         DomainListings.__init__(
             self, domain_client_id, domain_client_secret, domain_scopes
@@ -59,6 +60,11 @@ class SmartSearch(DomainListings, Client, NBN):
         # Results with None listing are projects & for now these can be excluded
         # Likely a better way to handle this though
         self.search_results = [x for x in results if x["listing"] is not None]
+
+        self.LOGGER.info(f"{len(self.search_results)} listings found")
+        self.LOGGER.info(
+            f"{len([x for x in results if x['listing'] is None])} project listings found & excluded"
+        )
 
     def filter_by_travel_time(self, max_travel_time: int, destination: str) -> None:
         """Filters properties based on max travel threshold.
@@ -79,6 +85,7 @@ class SmartSearch(DomainListings, Client, NBN):
                 x["travel_info"]["duration"], max_travel_time_sec
             )
         ]
+        self.LOGGER.info(f"{len(self.search_results)} listings remaining after travel time filter")
 
     @staticmethod
     def _travel_time_less_than_threshold(
@@ -191,8 +198,7 @@ class SmartSearch(DomainListings, Client, NBN):
 
         return tz.localize(constructed_datetime)
 
-    @staticmethod
-    def _extract_distance_duration(result: dict) -> dict:
+    def _extract_distance_duration(self, result: dict) -> dict:
         """Extract distance & duration from gmaps distance object.
 
         Args:
@@ -247,6 +253,7 @@ class SmartSearch(DomainListings, Client, NBN):
 
         # Apply filter
         self.search_results = list(compress(self.search_results, satisfies_search))
+        self.LOGGER.info(f"{len(self.search_results)} listings remaining after attribute filter")
 
     @staticmethod
     def _has_feature(
@@ -301,6 +308,7 @@ class SmartSearch(DomainListings, Client, NBN):
 
         # Apply filter
         self.search_results = list(compress(listings_and_nbn, has_nbn))
+        self.LOGGER.info(f"{len(self.search_results)} listings remaining after nbn filter")
 
     def _append_nbn(self, listing: dict) -> dict:
         """Retrieves & attaches NBN information to a listing.
@@ -319,11 +327,14 @@ class SmartSearch(DomainListings, Client, NBN):
         possible_locations = self.get_location_ids_from_address(address_for_searching)
 
         # Assume first result is the associated address. This could DEFINITELY be smarter
-        listing["nbn_details"] = {}
         if len(possible_locations["suggestions"]) > 0:
             listing["nbn_details"] = self.location_information(
                 possible_locations["suggestions"][0]["id"]
             )
+        else:
+            self.LOGGER.warning("No location suggestions found")
+            listing["nbn_details"] = {}
+
         return listing
 
     @staticmethod
