@@ -9,7 +9,7 @@ class NBN:
     """Interacts with NBN's unofficial API."""
     def __init__(self):
         """Sets base values required for API calls."""
-        self.LOGGER = logging.getLogger(__name__)
+        self.LOGGER = logging.getLogger('standard')
         self.nbn_base_url = "https://places.nbnco.net.au/places"
         self.headers = {
             "Referer": "https://www2.nbnco.com.au/residential/learn/rollout-map"

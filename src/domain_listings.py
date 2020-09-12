@@ -18,7 +18,7 @@ class DomainListings:
             scopes (list): Desired scope(s) to provide authentication for
                            Required scopes provided in: https://developer.domain.com.au/docs/apis
         """
-        self.LOGGER = logging.getLogger(__name__)
+        self.LOGGER = logging.getLogger('standard')
         self.client_id = client_id
         self.client_secret = client_secret
         self.scopes = scopes

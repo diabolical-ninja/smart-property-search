@@ -1,17 +1,16 @@
 """Entry point for API."""
 
 import json
-import logging
 import os
 
-# from logging_setup import configure_logger
+from logging_setup import configure_logger
 
 from smart_search import SmartSearch
 
 from utils import json_serial
 
 # Instantiate Logger as per config
-LOGGER = logging.getLogger(__name__)
+LOGGER = configure_logger()
 
 
 # Instantiate searcher

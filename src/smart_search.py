@@ -41,7 +41,7 @@ class SmartSearch(DomainListings, Client, NBN):
                                   Required scopes provided in: https://developer.domain.com.au/docs/apis   # noqa
             google_maps_key (str): API key for google maps
         """
-        self.LOGGER = logging.getLogger(__name__)
+        self.LOGGER = logging.getLogger('standard')
         NBN.__init__(self)
         DomainListings.__init__(
             self, domain_client_id, domain_client_secret, domain_scopes
@@ -215,7 +215,6 @@ class SmartSearch(DomainListings, Client, NBN):
                 "duration": result["duration"]["value"],
             }
         except Exception:
-            self.LOGGER.info("No travel information returned from Google Maps")
             return {"distance": "No Result", "duration": "No Result"}
 
     def filter_by_attribute(self, wanted_attributes: list) -> None:

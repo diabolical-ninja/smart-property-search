@@ -20,7 +20,7 @@ def json_serial(obj: typing.Any) -> typing.Any:
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
 
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('standard')
     logger.error("Type %s not serialisable" % type(obj))
     raise TypeError("Type %s not serialisable" % type(obj))
 
