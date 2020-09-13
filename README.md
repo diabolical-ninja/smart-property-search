@@ -39,6 +39,19 @@ sls deploy
     -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
     -   `Filters` are (optional) additional parameters to filter the results
 
+Currently the supported filters are:
+* `travelTime`
+    - A desired destination & the maximum allowable public transport time to get there
+* `features`
+    - List of features the property must have:
+        - AirConditioning
+        - Heating
+        - Outside
+        - Dishwasher
+    - Also see `src/filter_parameters.yml`
+* `nbn`
+    - List of desired NBN types from [NBN technologies](https://www.nbnco.com.au/learn/network-technology)
+
 A request will look like:
 
 ```json
@@ -51,7 +64,8 @@ A request will look like:
             "destinationAddress": "<target destination>",
             "maxTravelTime": 10 //minutes
         },
-        "features":["<keys from feature_parameters.yml>", ]
+        "features":["<keys from feature_parameters.yml>", ],
+        "nbn": ["<list of nbn types>"]
     }
 }
 ```
@@ -78,9 +92,11 @@ Eg:
             "maxTravelTime": 20 //minutes
         }
     },
-    "features":["AirConditioning", "Outside"]
+    "features":["AirConditioning", "Outside"],
+    "nbn": ["FTTP", "FTTB", "FTTC"]
 }
 ```
+
 
 7.  Once done, teardown the infrastructure using:
 
