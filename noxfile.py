@@ -1,3 +1,5 @@
+"""Configuration of nox for testing & code validation."""
+
 import nox
 
 
@@ -15,3 +17,13 @@ def lint(session):
         "pep8-naming",
     )
     session.run("flake8", "src/")
+
+
+@nox.session(python="3.6")
+def tests(session):
+    session.install(
+        "pytest",
+        "pytest-cov",
+        "pytest-xdist"
+    )
+    session.run("pytest", "--cov")
