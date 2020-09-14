@@ -10,7 +10,7 @@ def configure_logger() -> logging.Logger:
     """Sets up & configures logger object.
 
     Returns:
-        logging.Logger: [description]
+        logging.Logger: Configured logger
     """
     with open("logging_config.yml", "r") as f:
         log_config = safe_load(f.read())
