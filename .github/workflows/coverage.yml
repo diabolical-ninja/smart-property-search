@@ -11,6 +11,6 @@ jobs:
           python-version: '3.6'
       - run: pip install nox
       - name: Generate Coverage Report
-      - run: nox --sessions tests coverage
+        run: nox --sessions tests coverage
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
