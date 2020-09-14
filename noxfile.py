@@ -27,6 +27,7 @@ def lint(session: Session) -> None:
 def tests(session: Session) -> None:
     """Runs unit testing & generates coverage report."""
     session.install("pytest", "pytest-cov", "pytest-xdist")
+    session.run("pip", "install", "-r", "src/requirements.txt")
     session.run("pytest", "--cov")
 
 
