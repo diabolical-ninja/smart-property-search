@@ -1,10 +1,14 @@
 """Configuration of nox for testing & code validation."""
 
 import nox
+from nox.sessions import Session
+
+PYTHON_VERSION = "3.6"
 
 
-@nox.session(python="3.6")
-def lint(session):
+@nox.session(python=PYTHON_VERSION)
+def lint(session: Session) -> None:
+    """Runs linting checks."""
     session.install(
         "flake8",
         "flake8-docstrings",
@@ -19,11 +23,16 @@ def lint(session):
     session.run("flake8", "src/")
 
 
-@nox.session(python="3.6")
-def tests(session):
-    session.install(
-        "pytest",
-        "pytest-cov",
-        "pytest-xdist"
-    )
+@nox.session(python=PYTHON_VERSION)
+def tests(session: Session) -> None:
+    """Runs unit testing & generates coverage report."""
+    session.install("pytest", "pytest-cov", "pytest-xdist")
     session.run("pytest", "--cov")
+
+
+@nox.session(python=PYTHON_VERSION)
+def coverage(session: Session) -> None:
+    """Upload coverage data."""
+    session.install("coverage", "codecov")
+    session.run("coverage", "xml", "--fail-under=0")
+    session.run("codecov")
