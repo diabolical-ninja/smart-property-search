@@ -35,6 +35,10 @@ def search(event: dict, context: object) -> dict:
         dict: Filtered properties based on search criteria
     """
     try:
+        # Capture request information
+        LOGGER.debug(event)
+        LOGGER.debug(context)
+
         # Extract POST body information
         LOGGER.info("Extract request body from API payload")
         data = json.loads(event["body"])
