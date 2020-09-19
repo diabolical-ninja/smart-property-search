@@ -39,7 +39,7 @@ def search(event: dict, context: object) -> dict:
         LOGGER.info("Extract request body from API payload")
         data = json.loads(event["body"])
         domain_request = data["domain"]
-        smart_filters = data["filters"]
+        smart_filters = data.get("filters", {})
 
         # Retrieve initial search results
         LOGGER.info("Retrieve unfiltered search results")
