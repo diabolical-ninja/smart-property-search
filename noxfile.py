@@ -34,6 +34,6 @@ def tests(session: Session) -> None:
 @nox.session(python=PYTHON_VERSION)
 def coverage(session: Session) -> None:
     """Upload coverage data."""
-    session.install("pytest", "pytest-cov", "codecov")
-    session.run("pytest", "--cov-report=xml")
+    session.install("coverage", "codecov")
+    session.run("coverage", "xml", "--fail-under=0")
     session.run("codecov")
