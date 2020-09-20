@@ -205,7 +205,7 @@ class TestCreateNextDay:
             input_timezone,
         )
 
-        assert generated_test_value > datetime.now(timezone(input_timezone))
+        assert generated_test_value.date() >= datetime.now(timezone(input_timezone)).date()
         assert generated_test_value.isoweekday() == input_target_day_of_week
         assert generated_test_value.hour == input_target_hour
         assert generated_test_value.minute == input_target_minute
