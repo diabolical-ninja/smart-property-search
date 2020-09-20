@@ -2,15 +2,15 @@
 
 import os
 import sys
+from datetime import datetime
 
 import pytest
 
+from pytz import timezone
+
 sys.path.append(os.path.join(os.getcwd(), "src"))
 
-from smart_search import SmartSearch
-
-from datetime import datetime
-from pytz import timezone
+from smart_search import SmartSearch  # noqa
 
 
 default_search_parameters = {
@@ -95,8 +95,7 @@ def test__travel_time_less_than_threshold(
     assert (
         SmartSearch._travel_time_less_than_threshold(
             input_travel_time, input_max_travel_time
-        )
-        == expected
+        ) == expected
     )
 
 
@@ -136,7 +135,13 @@ def test_calculate_travel_time(
 def test_get_distance(
     setup_smart_search: object, input_destination: str, input_chunk_size: int
 ) -> None:
+    """Test retrieval of travel time for each listing.
 
+    Args:
+        setup_smart_search (object): Initialises the class
+        input_destination (str): Input value to target destination
+        input_chunk_size (int): How many origins to use in each batch
+    """
     origin_lat_longs = [
         (-26.4097576, 153.07724),
         (-33.7776146, 151.188339),
@@ -256,3 +261,23 @@ def test__extract_distance_duration(input_distance_result: dict) -> None:
     assert len(result.keys()) == 2
     assert "distance" in result
     assert "duration" in result
+
+
+@pytest.mark.parametrize(
+    "input_wanted_attributes", [[], ["AirConditioning"], ["Heating", "Outside"]]
+)
+def test_filter_by_attributes(
+    setup_smart_search: object, input_wanted_attributes: list
+) -> None:
+    """Tests attribute only filtering.
+
+    Args:
+        setup_smart_search (object): Initialises the class
+        input_wanted_attributes (list): Items to filter results by
+    """
+    setup_smart_search.listings_search(default_search_parameters)
+    initial_number_of_search_results = len(setup_smart_search.search_results)
+
+    setup_smart_search.filter_by_attribute(input_wanted_attributes)
+    assert isinstance(setup_smart_search.search_results, list)
+    assert len(setup_smart_search.search_results) <= initial_number_of_search_results
