@@ -1,8 +1,12 @@
 """Unit tests for src/logging_setup.py."""
 
 import logging
+import os
+import sys
 
-from src.logging_setup import configure_logger
+sys.path.append(os.path.join(os.getcwd(), "src"))
+
+from logging_setup import configure_logger  # noqa
 
 
 def test_configure_logger() -> None:

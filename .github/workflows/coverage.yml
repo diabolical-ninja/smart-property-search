@@ -14,3 +14,6 @@ jobs:
         run: nox --sessions tests coverage
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
+          CLIENT_ID: ${{ secrets.DOMAIN_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.DOMAIN_CLIENT_SECRET }}
+          GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}

@@ -2,6 +2,7 @@
 
 import logging
 import logging.config
+import os
 
 from yaml import safe_load
 
@@ -12,7 +13,8 @@ def configure_logger() -> logging.Logger:
     Returns:
         logging.Logger: Configured logger
     """
-    with open("logging_config.yml", "r") as f:
+    config_file = os.path.join(os.path.dirname(__file__), "logging_config.yml")
+    with open(config_file, "r") as f:
         log_config = safe_load(f.read())
 
     logging.config.dictConfig(log_config)

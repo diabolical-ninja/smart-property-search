@@ -4,7 +4,7 @@ from datetime import date, datetime
 
 import pytest
 
-from src.utils import chunks, extend_dictionary, json_serial
+from utils import chunks, extend_dictionary, json_serial
 
 
 class TestJsonSerial:

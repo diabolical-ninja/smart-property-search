@@ -1,8 +1,11 @@
 """Unit tests for src/domain_listings.py."""
 
 import os
+import sys
 
-from src.domain_listings import DomainListings
+sys.path.append(os.path.join(os.getcwd(), "src"))
+
+from domain_listings import DomainListings  # noqa
 
 from domainClient import ListingsApi  # noqa
 
