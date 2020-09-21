@@ -1,0 +1,9 @@
+# .coveragerc to control coverage.py
+[run]
+source = src/
+omit = src/domainClient/*
+branch = True
+
+[report]
+show_missing = True
+fail_under = 100

@@ -2,7 +2,10 @@
 
 import logging
 import typing
+import warnings
 from datetime import date, datetime
+
+logger = logging.getLogger("standard")
 
 
 def json_serial(obj: typing.Any) -> typing.Any:
@@ -20,7 +23,6 @@ def json_serial(obj: typing.Any) -> typing.Any:
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
 
-    logger = logging.getLogger("standard")
     logger.error("Type %s not serialisable" % type(obj))
     raise TypeError("Type %s not serialisable" % type(obj))
 
@@ -50,5 +52,10 @@ def extend_dictionary(base_dict: dict, extender_dict: dict, key_name: str) -> di
     Returns:
         dict: Base dictionary plus additional key
     """
+    if key_name in base_dict:
+        message = f"Key '{key_name}' already exists and will be overwritten"
+        logger.warning(message)
+        warnings.warn(message, UserWarning)
+
     base_dict[key_name] = extender_dict
     return base_dict

@@ -2,6 +2,7 @@
 
 import datetime
 import logging
+import os
 from itertools import compress
 
 from domain_listings import DomainListings
@@ -47,7 +48,9 @@ class SmartSearch(DomainListings, Client, NBN):
             self, domain_client_id, domain_client_secret, domain_scopes
         )
         Client.__init__(self, key=google_maps_key)
-        self.filter_parameters = safe_load(open("filter_parameters.yml"))
+
+        filter_parameters_file = os.path.join(os.path.dirname(__file__), "filter_parameters.yml")
+        self.filter_parameters = safe_load(open(filter_parameters_file))
 
     def listings_search(self, search_parameters: dict) -> None:
         """Retrieves listings based on initial search parameters.
@@ -198,7 +201,8 @@ class SmartSearch(DomainListings, Client, NBN):
 
         return tz.localize(constructed_datetime)
 
-    def _extract_distance_duration(self, result: dict) -> dict:
+    @staticmethod
+    def _extract_distance_duration(result: dict) -> dict:
         """Extract distance & duration from gmaps distance object.
 
         Args:

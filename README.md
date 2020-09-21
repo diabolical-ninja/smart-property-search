@@ -1,6 +1,8 @@
 # Smart Property Search
 
-![Linting](https://github.com/diabolical-ninja/smart-property-search/workflows/Linting/badge.svg) ![Deploy](https://github.com/diabolical-ninja/smart-property-search/workflows/Deploy%20Feature%20Branch/badge.svg)
+![Linting](https://github.com/diabolical-ninja/smart-property-search/workflows/Linting/badge.svg) ![Deploy](https://github.com/diabolical-ninja/smart-property-search/workflows/Deploy%20Feature%20Branch/badge.svg) [![codecov](https://codecov.io/gh/diabolical-ninja/smart-property-search/branch/master/graph/badge.svg)](https://codecov.io/gh/diabolical-ninja/smart-property-search)
+
+
 
 Buyer focused property search, with results tailored to your needs rather than the agents.
 

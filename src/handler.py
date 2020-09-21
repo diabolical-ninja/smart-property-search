@@ -35,11 +35,15 @@ def search(event: dict, context: object) -> dict:
         dict: Filtered properties based on search criteria
     """
     try:
+        # Capture request information
+        LOGGER.debug(event)
+        LOGGER.debug(context)
+
         # Extract POST body information
         LOGGER.info("Extract request body from API payload")
         data = json.loads(event["body"])
         domain_request = data["domain"]
-        smart_filters = data["filters"]
+        smart_filters = data.get("filters", {})
 
         # Retrieve initial search results
         LOGGER.info("Retrieve unfiltered search results")
@@ -78,6 +82,6 @@ def search(event: dict, context: object) -> dict:
 
         LOGGER.error(ex, exc_info=True)
 
-        response = {"statusCode": 200, "error": json.dumps(str(ex))}
+        response = {"statusCode": 500, "error": json.dumps(str(ex))}
 
         return response
