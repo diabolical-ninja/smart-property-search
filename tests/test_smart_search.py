@@ -15,11 +15,133 @@ from smart_search import SmartSearch  # noqa
 
 default_search_parameters = {
     "listingType": "Sale",
-    "propertyTypes": ["Penthouse", "ApartmentUnitFlat"],
-    "minBedrooms": 4,
-    "minBathrooms": 3,
-    "minPrice": 4500000,
-    "locations": [{"state": "VIC", "postcode": "3000"}],
+    "propertyTypes": ["House", "NewApartments"],
+    "minBedrooms": 3,
+    "minBathrooms": 2,
+    "minCarspaces": 1,
+    "locations": [
+        {
+            "state": "Vic",
+            "region": "",
+            "area": "",
+            "suburb": "Melbourne",
+            "postCode": "",
+            "includeSurroundingSuburbs": False,
+        }
+    ],
+}
+
+sample_listing = {
+    "type": "PropertyListing",
+    "listing": {
+        "listing_type": "Sale",
+        "id": 2013958589,
+        "advertiser": {
+            "type": "Agency",
+            "id": 4697,
+            "name": "Urbane Inner West",
+            "logo_url": "https://images.domain.com.au/img/Agencys/4697/logo_4697.GIF?date=2015-03-31-10-20-47",  # noqa
+            "preferred_colour_hex": "#019FC4",
+            "banner_url": "https://images.domain.com.au/img/Agencys/4697/banner_4697.GIF",
+            "contacts": [
+                {
+                    "name": "Charles Bailey",
+                    "photo_url": "https://images.domain.com.au/img/4697/contact_1153031.JPG?mod=171030-201656",  # noqa
+                }
+            ],
+        },
+        "price_details": {"display_price": "Contact Agent"},
+        "media": [
+            {
+                "category": "Image",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2013958589_1_0_171026_043335-w4500-h3000",  # noqa
+            }
+        ],
+        "property_details": {
+            "state": "NSW",
+            "features": ["Gas", "Study"],
+            "property_type": "House",
+            "all_property_types": ["House"],
+            "bathrooms": 2,
+            "bedrooms": 3,
+            "carspaces": 1,
+            "unit_number": "",
+            "street_number": "177",
+            "street": "Australia Street",
+            "area": "Inner West",
+            "region": "Sydney Region",
+            "suburb": "NEWTOWN",
+            "postcode": "2042",
+            "displayable_address": "177 Australia Street, Newtown",
+            "latitude": -33.8938522,
+            "longitude": 151.176926,
+            "landArea": 120,
+        },
+        "headline": "Classic terrace enhanced for modern urban living",
+        "summary_description": "<b>Classic terrace enhanced for modern urban living</b><br />This traditional two-level terrace has been cleverly renovated throughout and now offers a bright and stylish home with tastefully appointed interiors and a fresh modern feel. Positioned in a...",   # noqa
+        "has_floorplan": True,
+        "has_video": False,
+        "labels": ["New"],
+        "auction_schedule": {
+            "time": "2017-11-18T09:00:00",
+            "auction_location": "On Site",
+        },
+        "inspection_schedule": {
+            "by_sppointment": False,
+            "recurring": False,
+            "times": [
+                {
+                    "opening_time": "2017-11-01T17:30:00",
+                    "closing_time": "2017-11-01T18:00:00",
+                }
+            ],
+        },
+        "listing_slug": "177-australia-street-newtown-nsw-2042-2013958589",
+    },
+}
+
+sample_listing_empty = {
+    "listing": {
+        "property_details": {
+            "displayable_address": "123 fake st, Willywonka",
+            "state": "NSW",
+        }
+    }
+}
+
+sample_listing_with_nbn = {
+    "listing": {},
+    "nbn_details": {
+        "timestamp": 1600684835755,
+        "servingArea": {
+            "csaId": "CSA200000000647",
+            "techType": "HFC",
+            "serviceType": "Fixed line",
+            "serviceStatus": "available",
+            "serviceCategory": "brownfields",
+            "rfsMessage": "Oct 2018",
+            "description": "Newtown",
+        },
+        "addressDetail": {
+            "id": "LOC000098725003",
+            "latitude": -33.893853,
+            "longitude": 151.176923,
+            "reasonCode": "HFC_CT",
+            "serviceType": "Fixed line",
+            "serviceStatus": "available",
+            "disconnectionStatus": "PAST",
+            "disconnectionDate": "Nov 2019",
+            "techType": "HFC",
+            "formattedAddress": "LOT 4 177 AUSTRALIA ST NEWTOWN NSW 2042 Australia",
+            "address1": "Lot 4 177 Australia St",
+            "address2": "Newtown NSW 2042 Australia",
+            "statusMessage": "connected-true",
+            "frustrated": False,
+            "zeroBuildCost": True,
+            "cbdpricing": False,
+            "ee": True,
+        },
+    },
 }
 
 
@@ -205,7 +327,9 @@ class TestCreateNextDay:
             input_timezone,
         )
 
-        assert generated_test_value.date() >= datetime.now(timezone(input_timezone)).date()
+        assert (
+            generated_test_value.date() >= datetime.now(timezone(input_timezone)).date()
+        )
         assert generated_test_value.isoweekday() == input_target_day_of_week
         assert generated_test_value.hour == input_target_hour
         assert generated_test_value.minute == input_target_minute
@@ -281,3 +405,187 @@ def test_filter_by_attributes(
     setup_smart_search.filter_by_attribute(input_wanted_attributes)
     assert isinstance(setup_smart_search.search_results, list)
     assert len(setup_smart_search.search_results) <= initial_number_of_search_results
+
+
+@pytest.mark.parametrize(
+    "input_search_features, input_feature_search_words, expected",
+    [
+        (["AirConditioning"], [], True),
+        (["BalconyDeck", "GardenCourtyard"], [], True),
+        ([], ["air"], True),
+        ([], ["not a match", "conditioning"], True),
+        ([], ["airconditioning"], True),
+        (["Not a Feature"], [], False),
+        ([], ["AIR"], False),
+        ([], ["no", "matching", "terms"], False),
+        (["Not a Feature"], ["no", "matching", "terms"], False),
+    ],
+)
+def test__has_feature(
+    input_search_features: list, input_feature_search_words: list, expected: bool
+) -> None:
+    """Tests for identification of a feature.
+
+    Args:
+        input_search_features (list): List of test desired domain features
+        input_feature_search_words (list): List of test feature search words
+        expected (bool): Expected output
+    """
+    test_search_description = "This place has airconditioning, aint it great"
+    available_property_features = [
+        "AirConditioning",
+        "BuiltInWardrobes",
+        "CableOrSatellite",
+        "Ensuite",
+        "Floorboards",
+        "Gas",
+        "InternalLaundry",
+        "PetsAllowed",
+        "SecureParking",
+        "SwimmingPool",
+        "Furnished",
+        "GroundFloor",
+        "WaterViews",
+        "NorthFacing",
+        "CityViews",
+        "IndoorSpa",
+        "Gym",
+        "AlarmSystem",
+        "Intercom",
+        "BroadbandInternetAccess",
+        "Bath",
+        "Fireplace",
+        "SeparateDiningRoom",
+        "Heating",
+        "Dishwasher",
+        "Study",
+        "TennisCourt",
+        "Shed",
+        "FullyFenced",
+        "BalconyDeck",
+        "GardenCourtyard",
+        "OutdoorSpa",
+        "DoubleGlazedWindows",
+        "EnergyEfficientAppliances",
+        "WaterEfficientAppliances",
+        "WallCeilingInsulation",
+        "RainwaterStorageTank",
+        "GreywaterSystem",
+        "WaterEfficientFixtures",
+        "SolarHotWater",
+        "SolarPanels",
+    ]
+
+    assert (
+        SmartSearch._has_feature(
+            search_features=input_search_features,
+            feature_search_words=input_feature_search_words,
+            property_details_features=available_property_features,
+            property_description=test_search_description,
+        ) == expected
+    )
+
+
+@pytest.mark.parametrize(
+    "input_nbn_value",
+    [
+        (["FTTP"]),
+        (["FTTN"]),
+        (["FTTB"]),
+        (["HFC"]),
+        (["FTTC"]),
+        (["FTTN"]),
+        (["FTTB", "HFC"]),
+        (["FTTN", "FTTC", "FTTB"]),
+    ],
+)
+def test_filter_nbn(setup_smart_search: object, input_nbn_value: list) -> None:
+    """Tests that results are filtered based on the presence of NBN.
+
+    Args:
+        setup_smart_search (object): Initialises the class
+        input_nbn_value (list): NBN tech types to filter on
+    """
+    setup_smart_search.listings_search(default_search_parameters)
+    initial_number_of_search_results = len(setup_smart_search.search_results)
+
+    setup_smart_search.filter_nbn(input_nbn_value)
+
+    assert len(setup_smart_search.search_results) <= initial_number_of_search_results
+    assert isinstance(setup_smart_search.search_results, list)
+
+
+@pytest.mark.parametrize(
+    "sample_listing, expected_nbn_addition",
+    [
+        (
+            sample_listing,
+            {
+                "nbn_details": {
+                    "timestamp": 1600684835755,
+                    "servingArea": {},
+                    "addressDetail": {},
+                }
+            },
+        ),
+        (sample_listing_empty, {"nbn_details": {}}),
+    ],
+)
+def test__append_nbn(
+    setup_smart_search: object, sample_listing: dict, expected_nbn_addition: dict
+) -> None:
+    """Tests retrieving and append NBN info to a listing.
+
+    Args:
+        setup_smart_search (object): Initialises the class
+        sample_listing (dict): Sample domain listing
+        expected_nbn_addition (dict): NBN keys that should be appended to the listing
+    """
+    setup_smart_search.listings_search(default_search_parameters)
+
+    listing_with_nbn = setup_smart_search._append_nbn(sample_listing)
+    sample_listing["nbn_details"] = expected_nbn_addition
+
+    assert isinstance(listing_with_nbn, dict)
+    assert "nbn_details" in listing_with_nbn
+
+    assert set(listing_with_nbn.keys()) == set(sample_listing.keys())
+
+    assert set(listing_with_nbn["nbn_details"].keys()) == set(
+        sample_listing["nbn_details"].keys()
+    )
+
+
+@pytest.mark.parametrize(
+    "sample_listing, desired_nbn, expected",
+    [
+        ({"listing": {}, "nbn_details": {}}, ["FTTN"], False),
+        (sample_listing_with_nbn, ["HFC"], True,),
+        (sample_listing_with_nbn, ["FTTC", "HFC"], True,),
+        (sample_listing_with_nbn, ["FTTN"], False,),
+        (sample_listing_with_nbn, ["FTTN", "FTTB"], False,),
+        (
+            {
+                "listing": {},
+                "nbn_details": {
+                    "timestamp": 1600684835755,
+                    "servingArea": {},
+                    "addressDetail": {},
+                },
+            },
+            [],
+            True,
+        ),
+    ],
+)
+def test__has_desired_nbn(
+    sample_listing: dict, desired_nbn: list, expected: bool
+) -> None:
+    """Tests to see if the desired NBN technology is present.
+
+    Args:
+        sample_listing (dict): Listing with NBN information to test against
+        desired_nbn (list): Desired NBN technology
+        expected (bool): Expected outcome
+    """
+    assert SmartSearch._has_desired_nbn(sample_listing, desired_nbn) == expected
