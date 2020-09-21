@@ -82,6 +82,6 @@ def search(event: dict, context: object) -> dict:
 
         LOGGER.error(ex, exc_info=True)
 
-        response = {"statusCode": 200, "error": json.dumps(str(ex))}
+        response = {"statusCode": 500, "error": json.dumps(str(ex))}
 
         return response
