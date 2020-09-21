@@ -3,6 +3,8 @@
 import os
 import sys
 
+import pytest
+
 sys.path.append(os.path.join(os.getcwd(), "src"))
 
 from domain_listings import DomainListings  # noqa
@@ -109,3 +111,11 @@ class TestAccessToken:
         response = self.domain_listings_object.get_access_token()
         assert list(response.keys()) == ["error"]
         assert response["error"] == "invalid_scope"
+
+    def test_invalid_request(self) -> None:
+        """Test access token generation with an client id."""
+        self.domain_listings_object.client_id = None
+        self.domain_listings_object.client_secret = None
+
+        with pytest.raises(Exception):
+            self.domain_listings_object.get_access_token()
