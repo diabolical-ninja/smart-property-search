@@ -96,7 +96,9 @@ def test_get_score_transit_bike(
 
     if transit == 1:
         assert "transit" in response
-        assert set(response["transit"].keys()) == set(["score", "description", "summary"])
+        assert set(response["transit"].keys()) == set(
+            ["score", "description", "summary"]
+        )
 
 
 def test_get_score_failure(setup_walkscore: object) -> None:
@@ -105,7 +107,17 @@ def test_get_score_failure(setup_walkscore: object) -> None:
     Args:
         setup_walkscore (object): Instantiated walkscore object
     """
-    with pytest.raises(Exception):
-        setup_walkscore.get_score(latitude="not a latitude",
-                                  longitude="not a longitude",
-                                  address="not an address")
+    with pytest.raises(Exception, match="Unable to query walkscore API"):
+        setup_walkscore.get_score(latitude=123, longitude=456, address="not an address")
+
+
+def test_get_score_invalid_api_key() -> None:
+    """Tests an instance of a valid request that walkscore rejects."""
+    with pytest.raises(Exception, match="Invalid walkscore parameters passed"):
+        ws_client = WalkScore("Not an API key")
+        # raise Exception("Invalid walkscore parameters passed")
+        ws_client.get_score(
+            latitude=-37.8177834,
+            longitude=144.959732,
+            address="439 Collins St Collins Street, Melbourne",
+        )

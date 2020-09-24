@@ -71,10 +71,21 @@ class WalkScore:
         response = get(url=self.walkscore_base_url, params=params)
 
         if response.status_code == 200:
-            return response.json()
+            if response.json()["status"] == 1:
+                return response.json()
+            else:
+                log_items = {
+                    "message": "Invalid walkscore parameters passed",
+                    "params": params,
+                    "request_info": response.__dict__,
+                }
+                self.LOGGER.error(log_items)
+                raise Exception(log_items["message"])
         else:
-            msg = "Unable to query walkscore API"
-            self.LOGGER.error(
-                "Unable to query walkscore API", params, response.__dict__
-            )
-            raise Exception(msg)
+            log_items = {
+                "message": "Unable to query walkscore API",
+                "params": params,
+                "request_info": response.__dict__,
+            }
+            self.LOGGER.error(log_items)
+            raise Exception(log_items["message"])
