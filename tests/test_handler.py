@@ -12,8 +12,12 @@ sys.path.append(os.path.join(os.getcwd(), "src"))
 import handler  # noqa
 
 
-success_test_files = os.listdir(os.path.join(Path(__file__).parent, "test_handler_payloads", "successes"))
-failure_test_files = os.listdir(os.path.join(Path(__file__).parent, "test_handler_payloads", "failures"))
+success_test_files = os.listdir(
+    os.path.join(Path(__file__).parent, "test_handler_payloads", "successes")
+)
+failure_test_files = os.listdir(
+    os.path.join(Path(__file__).parent, "test_handler_payloads", "failures")
+)
 
 
 @pytest.mark.parametrize("test_file", success_test_files)
@@ -27,7 +31,11 @@ def test_search_success(test_file: dict) -> None:
     Args:
         test_file (dict): Sample payloads that should work successfully
     """
-    with open(os.path.join(Path(__file__).parent, "test_handler_payloads", "successes", test_file)) as f:
+    with open(
+        os.path.join(
+            Path(__file__).parent, "test_handler_payloads", "successes", test_file
+        )
+    ) as f:
         test_event = json.load(f)
 
     test_result = handler.search(test_event, None)
@@ -47,7 +55,11 @@ def test_failures_success(test_file: dict) -> None:
     Args:
         test_file (dict): Sample payloads that should not
     """
-    with open(os.path.join(Path(__file__).parent, "test_handler_payloads", "failures", test_file)) as f:
+    with open(
+        os.path.join(
+            Path(__file__).parent, "test_handler_payloads", "failures", test_file
+        )
+    ) as f:
         test_event = json.load(f)
 
     test_result = handler.search(test_event, None)

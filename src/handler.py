@@ -20,6 +20,7 @@ searcher = SmartSearch(
     domain_client_secret=os.getenv("CLIENT_SECRET"),
     domain_scopes=scopes,
     google_maps_key=os.getenv("GOOGLE_MAPS_KEY"),
+    walkscore_api_key=os.getenv("WSAPIKEY"),
 )
 
 
@@ -70,6 +71,12 @@ def search(event: dict, context: object) -> dict:
             LOGGER.info("Filtering by NBN requirements")
             searcher.filter_nbn(smart_filters["nbn"])
             LOGGER.info("Filtering by NBN requirements...Done")
+
+        # Filter by walkscore
+        if "walkscore" in smart_filters:
+            LOGGER.info("Filtering by minimum walkscore")
+            searcher.filter_walkscore(smart_filters["walkscore"])
+            LOGGER.info("Filtering by minimum walkscore...Done")
 
         response = {
             "statusCode": 200,
