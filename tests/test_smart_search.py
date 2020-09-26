@@ -1,3 +1,5 @@
+"""Unit tests for src/smart_search.py."""
+
 import os
 import sys
 from datetime import datetime
@@ -76,7 +78,7 @@ sample_listing = {
             "landArea": 120,
         },
         "headline": "Classic terrace enhanced for modern urban living",
-        "summary_description": "<b>Classic terrace enhanced for modern urban living</b><br />This traditional two-level terrace has been cleverly renovated throughout and now offers a bright and stylish home with tastefully appointed interiors and a fresh modern feel. Positioned in a...",   # noqa
+        "summary_description": "<b>Classic terrace enhanced for modern urban living</b><br />This traditional two-level terrace has been cleverly renovated throughout and now offers a bright and stylish home with tastefully appointed interiors and a fresh modern feel. Positioned in a...",  # noqa
         "has_floorplan": True,
         "has_video": False,
         "labels": ["New"],
@@ -143,25 +145,25 @@ sample_listing_with_nbn = {
 }
 
 sample_listing_with_walkscore = {
-        "listing": {},
-        "walkscore": {
-            "status": 1,
-            "walkscore": 92,
-            "description": "Walker's Paradise",
-            "updated": "2020-04-20 09:16:05.993243",
-            "logo_url": "https://cdn.walk.sc/images/api-logo.png",
-            "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
-            "more_info_link": "https://www.redfin.com/how-walk-score-works",
-            "ws_link": "https://www.walkscore.com/score/9.slash.100-Commercial-Road-South-Yarra/lat=-37.8454742/lng=144.984787/?utm_source=nick.klein@rutgers.edu&utm_medium=ws_api&utm_campaign=ws_api",
-            "help_link": "https://www.redfin.com/how-walk-score-works",
-            "snapped_lat": -37.845,
-            "snapped_lon": 144.9855,
-            "transit": {
-                "score": 95,
-                "description": "Rider's Paradise ",
-                "summary": "18 nearby routes: 4 bus, 14 rail, 0 other"
-            }
-        }
+    "listing": {},
+    "walkscore": {
+        "status": 1,
+        "walkscore": 92,
+        "description": "Walker's Paradise",
+        "updated": "2020-04-20 09:16:05.993243",
+        "logo_url": "https://cdn.walk.sc/images/api-logo.png",
+        "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
+        "more_info_link": "https://www.redfin.com/how-walk-score-works",
+        "ws_link": "https://www.walkscore.com/score/9.slash.100-Commercial-Road-South-Yarra/lat=-37.8454742/lng=144.984787/?utm_source=nick.klein@rutgers.edu&utm_medium=ws_api&utm_campaign=ws_api",  # noqa
+        "help_link": "https://www.redfin.com/how-walk-score-works",
+        "snapped_lat": -37.845,
+        "snapped_lon": 144.9855,
+        "transit": {
+            "score": 95,
+            "description": "Rider's Paradise ",
+            "summary": "18 nearby routes: 4 bus, 14 rail, 0 other",
+        },
+    },
 }
 
 
@@ -178,7 +180,7 @@ def setup_smart_search() -> None:
         domain_client_secret=os.getenv("CLIENT_SECRET"),
         domain_scopes=scopes,
         google_maps_key=os.getenv("GOOGLE_MAPS_KEY"),
-        walkscore_api_key=os.getenv("WSAPIKEY")
+        walkscore_api_key=os.getenv("WSAPIKEY"),
     )
     return searcher
 
@@ -238,7 +240,8 @@ def test__travel_time_less_than_threshold(
     assert (
         SmartSearch._travel_time_less_than_threshold(
             input_travel_time, input_max_travel_time
-        ) == expected
+        )
+        == expected
     )
 
 
@@ -503,7 +506,8 @@ def test__has_feature(
             feature_search_words=input_feature_search_words,
             property_details_features=available_property_features,
             property_description=test_search_description,
-        ) == expected
+        )
+        == expected
     )
 
 
@@ -613,12 +617,14 @@ def test__has_desired_nbn(
 
 
 @pytest.mark.parametrize("walkscore_test_value", [0, 50, 80, 100])
-def test_filter_walkscore(setup_smart_search: object, walkscore_test_value: int) -> None:
+def test_filter_walkscore(
+    setup_smart_search: object, walkscore_test_value: int
+) -> None:
     """Tests that results are filtered based on the desired walkscore.
 
     Args:
         setup_smart_search (object): Initialises the class
-        input_nbn_value (list): Walkscore threshold
+        walkscore_test_value (list): Walkscore threshold
     """
     setup_smart_search.listings_search(default_search_parameters)
     initial_number_of_search_results = len(setup_smart_search.search_results)
@@ -629,26 +635,29 @@ def test_filter_walkscore(setup_smart_search: object, walkscore_test_value: int)
     assert isinstance(setup_smart_search.search_results, list)
 
 
-@pytest.mark.parametrize("sample_listing", [
-    {
-    "listing":{
-        "property_details":{
-            "latitude": -31.3399963,
-            "longitude": 151.513855,
-            "displayable_address": "340 Flags Niangala Road, Walcha"
+@pytest.mark.parametrize(
+    "sample_listing",
+    [
+        {
+            "listing": {
+                "property_details": {
+                    "latitude": -31.3399963,
+                    "longitude": 151.513855,
+                    "displayable_address": "340 Flags Niangala Road, Walcha",
+                }
             }
-        }
-    },
-    {
-    "listing":{
-        "property_details":{
-            "latitude": -37.8177834,
-            "longitude": 144.959732,
-            "displayable_address": "439 Collins St Collins Street, Melbourne"
+        },
+        {
+            "listing": {
+                "property_details": {
+                    "latitude": -37.8177834,
+                    "longitude": 144.959732,
+                    "displayable_address": "439 Collins St Collins Street, Melbourne",
+                }
             }
-        }
-    }
-])
+        },
+    ],
+)
 def test__append_walkscore(setup_smart_search: object, sample_listing: dict) -> None:
     """Tests retrieving and append walkscore info to a listing.
 
@@ -670,15 +679,20 @@ def test__append_walkscore(setup_smart_search: object, sample_listing: dict) -> 
         ({"listing": {}, "walkscore": {}}, 50, False),
         (sample_listing_with_walkscore, 0, True),
         (sample_listing_with_walkscore, 50, True),
-        (sample_listing_with_walkscore, 100, False)
-    ]
+        (sample_listing_with_walkscore, 100, False),
+    ],
 )
-def test__has_sufficient_walkscore(sample_listing: dict, test_minimum_walk_score: int, expected: bool) -> None:
+def test__has_sufficient_walkscore(
+    sample_listing: dict, walkscore_test_value: int, expected: bool
+) -> None:
     """Tests to see if the minimum walkscore threshold is satisfied.
 
     Args:
         sample_listing (dict): Listing with walkscore information to test against
-        desired_nbn (list): Minimum acceptable walkscore
+        walkscore_test_value (int): Minimum acceptable walkscore
         expected (bool): Expected outcome
     """
-    assert SmartSearch._has_sufficient_walkscore(sample_listing, test_minimum_walk_score) == expected
+    assert (
+        SmartSearch._has_sufficient_walkscore(sample_listing, walkscore_test_value)
+        == expected
+    )
