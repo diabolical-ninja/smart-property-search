@@ -15,10 +15,12 @@ import pytz
 
 from utils import chunks, extend_dictionary
 
+from walkscore import WalkScore
+
 from yaml import safe_load
 
 
-class SmartSearch(DomainListings, Client, NBN):
+class SmartSearch(DomainListings, Client, NBN, WalkScore):
     """Main class for searching & filtering functionality.
 
     Args:
@@ -32,6 +34,7 @@ class SmartSearch(DomainListings, Client, NBN):
         domain_client_secret: str,
         domain_scopes: list,
         google_maps_key: str,
+        walkscore_api_key: str,
     ):
         """Instantiates base classes
 
@@ -41,15 +44,19 @@ class SmartSearch(DomainListings, Client, NBN):
             domain_scopes (list): Desired scope(s) to provide authentication for
                                   Required scopes provided in: https://developer.domain.com.au/docs/apis   # noqa
             google_maps_key (str): API key for google maps
+            walkscore_api_key (str): Walk Score API Key
         """
         self.LOGGER = logging.getLogger("standard")
         NBN.__init__(self)
+        WalkScore.__init__(self, walkscore_api_key)
         DomainListings.__init__(
             self, domain_client_id, domain_client_secret, domain_scopes
         )
         Client.__init__(self, key=google_maps_key)
 
-        filter_parameters_file = os.path.join(os.path.dirname(__file__), "filter_parameters.yml")
+        filter_parameters_file = os.path.join(
+            os.path.dirname(__file__), "filter_parameters.yml"
+        )
         self.filter_parameters = safe_load(open(filter_parameters_file))
 
     def listings_search(self, search_parameters: dict) -> None:
@@ -88,7 +95,9 @@ class SmartSearch(DomainListings, Client, NBN):
                 x["travel_info"]["duration"], max_travel_time_sec
             )
         ]
-        self.LOGGER.info(f"{len(self.search_results)} listings remaining after travel time filter")
+        self.LOGGER.info(
+            f"{len(self.search_results)} listings remaining after travel time filter"
+        )
 
     @staticmethod
     def _travel_time_less_than_threshold(
@@ -257,7 +266,9 @@ class SmartSearch(DomainListings, Client, NBN):
 
         # Apply filter
         self.search_results = list(compress(self.search_results, satisfies_search))
-        self.LOGGER.info(f"{len(self.search_results)} listings remaining after attribute filter")
+        self.LOGGER.info(
+            f"{len(self.search_results)} listings remaining after attribute filter"
+        )
 
     @staticmethod
     def _has_feature(
@@ -312,7 +323,9 @@ class SmartSearch(DomainListings, Client, NBN):
 
         # Apply filter
         self.search_results = list(compress(listings_and_nbn, has_nbn))
-        self.LOGGER.info(f"{len(self.search_results)} listings remaining after nbn filter")
+        self.LOGGER.info(
+            f"{len(self.search_results)} listings remaining after nbn filter"
+        )
 
     def _append_nbn(self, listing: dict) -> dict:
         """Retrieves & attaches NBN information to a listing.
@@ -371,3 +384,76 @@ class SmartSearch(DomainListings, Client, NBN):
                 return True
             else:
                 return False
+
+    def filter_walkscore(self, minimum_walk_score: int) -> None:
+        """Filter listings by minimum walkscore.
+
+        Args:
+            minimum_walk_score (int): Minimum walkscore a listing must have.
+        """
+        # Attach walkscore to each listing
+        listings_with_walkscore = [self._append_walkscore(x) for x in self.search_results]
+
+        # Assess Sufficient Walkscore
+        good_walkscore = [
+            self._has_sufficient_walkscore(x, minimum_walk_score)
+            for x in listings_with_walkscore
+        ]
+
+        # Apply filter
+        self.search_results = list(compress(listings_with_walkscore, good_walkscore))
+        self.LOGGER.info(
+            f"{len(self.search_results)} listings remaining after walkscore filter"
+        )
+
+    def _append_walkscore(self, listing: dict) -> dict:
+        """Appends walkscore to listing information.
+
+        Args:
+            listing (dict): Domain object with listing information.
+
+        Returns:
+            dict: Original listing with walkscore attributes attached.
+        """
+        try:
+            listing["walkscore"] = self.get_score(
+                latitude=listing["listing"]["property_details"]["latitude"],
+                longitude=listing["listing"]["property_details"]["longitude"],
+                address=listing["listing"]["property_details"]["displayable_address"],
+            )
+            return listing
+
+        except Exception as ex:
+            exception_info = {
+                "listing": listing,
+                "exception": ex
+            }
+            self.LOGGER.error(exception_info)
+
+            # Generate dummy walkscore
+            listing["walkscore"] = {
+                "walkscore": 0
+            }
+            return listing
+
+    @staticmethod
+    def _has_sufficient_walkscore(listing: dict, minimum_walk_score: int) -> bool:
+        """Determine whether listing has desied sufficient walkscore.
+
+        More information on walkscore available at:
+            - https://www.walkscore.com/professional/
+            - https://www.walkscore.com/professional/api.php
+
+        Args:
+            listing (dict): Listing object from domain
+            minimum_walk_score (int): Minimum acceptable walkscore for a listing
+
+        Returns:
+            bool: Flag indicating is the listing has appropriate walkscore
+        """
+        response = False
+        if "walkscore" in listing["walkscore"]:
+            if listing["walkscore"]["walkscore"] >= minimum_walk_score:
+                response = True
+
+        return response

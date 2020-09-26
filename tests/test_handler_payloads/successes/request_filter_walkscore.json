@@ -78,6 +78,6 @@
         "domainName": "cz9t5w8b3b.execute-api.ap-southeast-2.amazonaws.com",
         "apiId": "cz9t5w8b3b"
     },
-    "body": "{\"domain\":{\"listingType\":\"Sale\",\"propertyTypes\":[\"House\",\"NewApartments\"],\"minBedrooms\":3,\"minBathrooms\":2,\"minCarspaces\":1,\"locations\":[{\"state\":\"Vic\",\"region\":\"\",\"area\":\"\",\"suburb\":\"Melbourne\",\"postCode\":\"\",\"includeSurroundingSuburbs\":false}]},\"filters\":{\"travelTime\":{\"destinationAddress\":\"Spring St, East Melbourne VIC 3002\",\"maxTravelTime\":20},\"features\":[\"AirConditioning\",\"Outside\"],\"nbn\":[\"FTTP\",\"FTTB\",\"FTTC\"],\"walkscore\":70}}",
+    "body": "{\"domain\":{\"listingType\":\"Sale\",\"propertyTypes\":[\"House\",\"NewApartments\"],\"minBedrooms\":3,\"minBathrooms\":2,\"minCarspaces\":1,\"locations\":[{\"state\":\"Vic\",\"region\":\"\",\"area\":\"\",\"suburb\":\"Melbourne\",\"postCode\":\"\",\"includeSurroundingSuburbs\":false}]},\"filters\":{\"walkscore\":70}}",
     "isBase64Encoded": false
 }
