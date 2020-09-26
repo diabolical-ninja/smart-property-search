@@ -415,16 +415,14 @@ class SmartSearch(DomainListings, Client, NBN, WalkScore):
         Returns:
             dict: Original listing with walkscore attributes attached.
         """
-        # Generate dummy walkscore
-        listing["walkscore"] = {
-            "walkscore": 0
-        }
         try:
             listing["walkscore"] = self.get_score(
                 latitude=listing["listing"]["property_details"]["latitude"],
                 longitude=listing["listing"]["property_details"]["longitude"],
                 address=listing["listing"]["property_details"]["displayable_address"],
             )
+            return listing
+
         except Exception as ex:
             exception_info = {
                 "listing": listing,
@@ -432,7 +430,11 @@ class SmartSearch(DomainListings, Client, NBN, WalkScore):
             }
             self.LOGGER.error(exception_info)
 
-        return listing
+            # Generate dummy walkscore
+            listing["walkscore"] = {
+                "walkscore": 0
+            }
+            return listing
 
     @staticmethod
     def _has_sufficient_walkscore(listing: dict, minimum_walk_score: int) -> bool:

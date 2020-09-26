@@ -656,6 +656,11 @@ def test_filter_walkscore(
                 }
             }
         },
+        {
+            "listing": {
+                "property_details": {}
+            }
+        },
     ],
 )
 def test__append_walkscore(setup_smart_search: object, sample_listing: dict) -> None:
