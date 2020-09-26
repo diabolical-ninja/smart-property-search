@@ -10,8 +10,10 @@ Buyer focused property search, with results tailored to your needs rather than t
 
 Assumes you have:
 
--   An AWS Account including access & secret keys
--   A Google maps API key
+- An AWS Account including access & secret keys
+- Domain client ID & secret, available from [Domain](https://developer.domain.com.au/docs/introduction) 
+- A Google maps API key
+- WalkScore API key, available from [Walk Score](https://www.walkscore.com/professional/walk-score-apis.php)
 
 1.  Build Domain client library
 
@@ -27,8 +29,8 @@ mv domainClient/domainClient src/domainClient
 
 3.  Install & configure serverless via the instructions on their [website](https://www.serverless.com/framework/docs/getting-started/)
 
+4. Populate `serverless.yml` with all required keys
 
-4.  Generate client ID & secret from [Domain](https://developer.domain.com.au/docs/introduction) & populate the appropriate fields within `serverless.yml`.
 
 5.  To deploy:
 
@@ -36,10 +38,21 @@ mv domainClient/domainClient src/domainClient
 sls deploy
 ```
 
-6.  An API will now be available that you can query with different search parameters.
 
-    -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
-    -   `Filters` are (optional) additional parameters to filter the results
+6.  Once done, teardown the infrastructure using:
+
+```sh
+sls remove
+```
+
+## Using the API
+
+An API will now be available that you can query with different search parameters. 
+
+To query the API make a `POST` request using your favourite client & include a `JSON` body with your search & filter criteria. The key items to include are:
+
+-   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
+-   `Filters` are (optional) additional parameters to filter the results
 
 Currently the supported filters are:
 * `travelTime`
@@ -53,6 +66,8 @@ Currently the supported filters are:
     - Also see `src/filter_parameters.yml`
 * `nbn`
     - List of desired NBN types from [NBN technologies](https://www.nbnco.com.au/learn/network-technology)
+* `walkscore`
+    - Minimum allowable walkscore value, as defined by [Walk Score](https://www.walkscore.com/)
 
 A request will look like:
 
@@ -67,7 +82,8 @@ A request will look like:
             "maxTravelTime": 10 //minutes
         },
         "features":["<keys from feature_parameters.yml>", ],
-        "nbn": ["<list of nbn types>"]
+        "nbn": ["<list of nbn types>"],
+        "walkscore": <minimum allowable walkscore>
     }
 }
 ```
@@ -95,13 +111,7 @@ Eg:
         }
     },
     "features":["AirConditioning", "Outside"],
-    "nbn": ["FTTP", "FTTB", "FTTC"]
+    "nbn": ["FTTP", "FTTB", "FTTC"],
+    "walkscore": 75
 }
-```
-
-
-7.  Once done, teardown the infrastructure using:
-
-```sh
-sls remove
 ```
