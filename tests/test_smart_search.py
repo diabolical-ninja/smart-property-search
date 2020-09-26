@@ -674,7 +674,7 @@ def test__append_walkscore(setup_smart_search: object, sample_listing: dict) -> 
 
 
 @pytest.mark.parametrize(
-    "sample_listing, test_minimum_walk_score, expected",
+    "sample_listing, walkscore_test_value, expected",
     [
         ({"listing": {}, "walkscore": {}}, 50, False),
         (sample_listing_with_walkscore, 0, True),
