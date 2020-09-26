@@ -23,3 +23,4 @@ jobs:
           CLIENT_SECRET: ${{ secrets.DOMAIN_CLIENT_SECRET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
+          WSAPIKEY: ${{ secrets.WSAPIKEY }}
