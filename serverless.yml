@@ -21,6 +21,9 @@ functions:
       - http:
           path: search
           method: post
+          request:
+            schema:
+              application/json: ${file(search_schema.json)}
 
 plugins:
   - serverless-python-requirements

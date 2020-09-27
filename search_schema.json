@@ -1,0 +1,471 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "SmartSearch Search Schema",
+    "description": "Request parameters for the seach capability",
+    "type": "object",
+    "properties": {
+        "domain": {
+            "description": "Domain listings parameters",
+            "type": "object",
+            "properties": {
+                "listingType": {
+                    "enum": [
+                        "Sale",
+                        "Rent",
+                        "Share",
+                        "Sold",
+                        "NewHomes"
+                    ],
+                    "type": "string"
+                },
+                "propertyTypes": {
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "AcreageSemiRural",
+                            "ApartmentUnitFlat",
+                            "Aquaculture",
+                            "BlockOfUnits",
+                            "CarSpace",
+                            "DairyFarming",
+                            "DevelopmentSite",
+                            "Duplex",
+                            "Farm",
+                            "FishingForestry",
+                            "NewHomeDesigns",
+                            "House",
+                            "NewHouseLand",
+                            "IrrigationServices",
+                            "NewLand",
+                            "Livestock",
+                            "NewApartments",
+                            "Penthouse",
+                            "RetirementVillage",
+                            "Rural",
+                            "SemiDetached",
+                            "SpecialistFarm",
+                            "Studio",
+                            "Terrace",
+                            "Townhouse",
+                            "VacantLand",
+                            "Villa",
+                            "Cropping",
+                            "Viticulture",
+                            "MixedFarming",
+                            "Grazing",
+                            "Horticulture",
+                            "Equine",
+                            "Farmlet",
+                            "Orchard",
+                            "RuralLifestyle"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "propertyFeatures": {
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "AirConditioning",
+                            "BuiltInWardrobes",
+                            "CableOrSatellite",
+                            "Ensuite",
+                            "Floorboards",
+                            "Gas",
+                            "InternalLaundry",
+                            "PetsAllowed",
+                            "SecureParking",
+                            "SwimmingPool",
+                            "Furnished",
+                            "GroundFloor",
+                            "WaterViews",
+                            "NorthFacing",
+                            "CityViews",
+                            "IndoorSpa",
+                            "Gym",
+                            "AlarmSystem",
+                            "Intercom",
+                            "BroadbandInternetAccess",
+                            "Bath",
+                            "Fireplace",
+                            "SeparateDiningRoom",
+                            "Heating",
+                            "Dishwasher",
+                            "Study",
+                            "TennisCourt",
+                            "Shed",
+                            "FullyFenced",
+                            "BalconyDeck",
+                            "GardenCourtyard",
+                            "OutdoorSpa",
+                            "DoubleGlazedWindows",
+                            "EnergyEfficientAppliances",
+                            "WaterEfficientAppliances",
+                            "WallCeilingInsulation",
+                            "RainwaterStorageTank",
+                            "GreywaterSystem",
+                            "WaterEfficientFixtures",
+                            "SolarHotWater",
+                            "SolarPanels"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "listingAttributes": {
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "HasPhotos",
+                            "HasPrice",
+                            "NotUpForAuction",
+                            "NotUnderContract",
+                            "MarkedAsNew"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "propertyEstablishedType": {
+                    "enum": [
+                        "Any",
+                        "New",
+                        "Established"
+                    ],
+                    "type": "string"
+                },
+                "minBedrooms": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "maxBedrooms": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "minBathrooms": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "maxBathrooms": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "minCarspaces": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "maxCarspaces": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "minPrice": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "maxPrice": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "minLandArea": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "maxLandArea": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "advertiserIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "adIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "excludeAdIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "enum": [
+                                    "ACT",
+                                    "NSW",
+                                    "QLD",
+                                    "VIC",
+                                    "SA",
+                                    "WA",
+                                    "NT",
+                                    "TAS"
+                                ],
+                                "type": "string"
+                            },
+                            "region": {
+                                "type": "string"
+                            },
+                            "area": {
+                                "type": "string"
+                            },
+                            "suburb": {
+                                "type": "string"
+                            },
+                            "postCode": {
+                                "type": "string"
+                            },
+                            "includeSurroundingSuburbs": {
+                                "type": "boolean"
+                            },
+                            "surroundingRadiusInMeters": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    }
+                },
+                "schoolCatchments": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "state": {
+                                "type": "string"
+                            },
+                            "postcode": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "locationTerms": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "newDevOnly": {
+                    "type": "boolean"
+                },
+                "inspectionFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "inspectionTo": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "auctionFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "auctionTo": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "dateAvailableFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "dateAvailableTo": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "ruralOnly": {
+                    "type": "boolean"
+                },
+                "excludePriceWithheld": {
+                    "type": "boolean"
+                },
+                "excludeDepositTaken": {
+                    "type": "boolean"
+                },
+                "topspotKeywords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "customSort": {
+                    "type": "object",
+                    "properties": {
+                        "elements": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "field": {
+                                        "enum": [
+                                            "AdId",
+                                            "PromoLevelScore",
+                                            "FreshnessLevel",
+                                            "ProductBoost",
+                                            "DateUpdated",
+                                            "DateListed",
+                                            "SuburbName",
+                                            "PriceDisplayOption",
+                                            "SoldDate",
+                                            "Price",
+                                            "EarliestInspectionOpenTime",
+                                            "EarliestAuctionTime",
+                                            "DateAvailable"
+                                        ],
+                                        "type": "string"
+                                    },
+                                    "direction": {
+                                        "enum": [
+                                            "Ascending",
+                                            "Descending"
+                                        ],
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "boostPrimarySuburbs": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "sort": {
+                    "type": "object",
+                    "properties": {
+                        "sortKey": {
+                            "enum": [
+                                "Default",
+                                "Suburb",
+                                "Price",
+                                "DateUpdated",
+                                "InspectionTime",
+                                "AuctionTime",
+                                "Proximity",
+                                "SoldDate",
+                                "DefaultThenDateUpdated",
+                                "DateAvailable",
+                                "DateListed"
+                            ],
+                            "type": "string"
+                        },
+                        "direction": {
+                            "enum": [
+                                "Ascending",
+                                "Descending"
+                            ],
+                            "type": "string"
+                        },
+                        "proximityTo": {
+                            "type": "object",
+                            "properties": {
+                                "lat": {
+                                    "type": "number",
+                                    "format": "double"
+                                },
+                                "lon": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            }
+                        }
+                    }
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "geoWindow": {
+                    "type": "object"
+                },
+                "updatedSince": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "listedSince": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "includeInspectionAggregations": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "criteria": {
+                                "enum": [
+                                    "Include",
+                                    "Exclude"
+                                ],
+                                "type": "string"
+                            },
+                            "tag": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "filters": {
+            "description": "Contains all filters for the search",
+            "type": "object",
+            "properties": {
+                "travelTime": {
+                    "description": "Travel time filter information",
+                    "properties": {
+                        "destinationAddress": {
+                            "type": "string"
+                        },
+                        "maxTravelTime": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "features": {
+                    "description": "Property feature search keywords",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["AirConditioning", "Heating", "Outside", "Dishwasher"]
+                    }
+                },
+                "nbn": {
+                    "description": "Desired NBN technology types",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["FTTP", "FTTB", "HFC", "FTTC", "FTTN"],
+                        "minItems": 1
+                    },
+                    "uniqueItems": true
+                },
+                "walkscore": {
+                    "description": "Minimum allowable walkscore",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                }
+            }
+        }
+    },
+    "required": ["domain"]
+}
