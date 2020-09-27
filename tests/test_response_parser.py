@@ -7,7 +7,7 @@ import pytest
 
 sys.path.append(os.path.join(os.getcwd(), "src"))
 
-from response_parser import (
+from response_parser import (    # noqa
     clean_domain,
     clean_response,
     clean_travel_info,
@@ -32,11 +32,11 @@ sample_one = {
             "contacts": [
                 {
                     "name": "Emily Liu",
-                    "photo_url": "https://images.domain.com.au/img/31049/contact_1754765.jpeg?mod=200812-181210",
+                    "photo_url": "https://images.domain.com.au/img/31049/contact_1754765.jpeg?mod=200812-181210",  # noqa
                 },
                 {
                     "name": "Angus Liu",
-                    "photo_url": "https://images.domain.com.au/img/31049/contact_1616963.png?mod=200810-112540",
+                    "photo_url": "https://images.domain.com.au/img/31049/contact_1616963.png?mod=200810-112540",  # noqa
                 },
             ],
         },
@@ -49,19 +49,19 @@ sample_one = {
         "media": [
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_1_1_200708_012540-w1140-h624",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_1_1_200708_012540-w1140-h624",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_2_1_200708_012540-w1227-h738",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_2_1_200708_012540-w1227-h738",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_3_1_200708_012540-w1197-h614",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_3_1_200708_012540-w1197-h614",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_4_1_200708_012534-w977-h546",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016359058_4_1_200708_012534-w977-h546",  # noqa
             },
         ],
         "property_details": {
@@ -101,7 +101,7 @@ sample_one = {
             "tags": None,
         },
         "headline": "Brand 3bedroom new spacious attraction with affordability price",
-        "summary_description": "<b></b><br />Choose from low or high level, this 3 bed, 2 bath 1 car park floorplan will accommodate you with a commitment for contemporary and blissful lifestyle. It sets in a grand scaled complex, with an impressively spacious layout, delivering the ...",
+        "summary_description": "<b></b><br />Choose from low or high level, this 3 bed, 2 bath 1 car park floorplan will accommodate you with a commitment for contemporary and blissful lifestyle. It sets in a grand scaled complex, with an impressively spacious layout, delivering the ...",  # noqa
         "has_floorplan": True,
         "has_video": False,
         "labels": [],
@@ -148,7 +148,7 @@ sample_one = {
         "logo_url": "https://cdn.walk.sc/images/api-logo.png",
         "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
         "more_info_link": "https://www.redfin.com/how-walk-score-works",
-        "ws_link": "https://www.walkscore.com/score/Footscray/lat=-37.7989/lng=144.892365/?utm_source=nick.klein@rutgers.edu&utm_medium=ws_api&utm_campaign=ws_api",
+        "ws_link": "https://www.walkscore.com/score/Footscray/lat=-37.7989/lng=144.892365",  # noqa
         "help_link": "https://www.redfin.com/how-walk-score-works",
         "snapped_lat": -37.7985,
         "snapped_lon": 144.8925,
@@ -171,44 +171,44 @@ sample_two = {
             "type": "Agency",
             "id": 27501,
             "name": "Aumeca Group Pty Ltd",
-            "logo_url": "https://images.domain.com.au/img/Agencys/27501/logo_27501.GIF?date=2016-03-04-09-53-37",
+            "logo_url": "https://images.domain.com.au/img/Agencys/27501/logo_27501.GIF?date=2016-03-04-09-53-37",  # noqa
             "preferred_colour_hex": "#E67817",
             "banner_url": "https://images.domain.com.au/img/Agencys/27501/banner_27501.GIF",
             "contacts": [
                 {
                     "name": "Zack Liu",
-                    "photo_url": "https://images.domain.com.au/img/27501/contact_1639021.jpeg?mod=200703-195050",
+                    "photo_url": "https://images.domain.com.au/img/27501/contact_1639021.jpeg?mod=200703-195050",  # noqa
                 },
                 {
                     "name": "Terrence Shen",
-                    "photo_url": "https://images.domain.com.au/img/27501/contact_1707425.jpeg?mod=200703-195200",
+                    "photo_url": "https://images.domain.com.au/img/27501/contact_1707425.jpeg?mod=200703-195200",  # noqa
                 },
             ],
         },
         "media": [
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_12_1_200412_115522-w2736-h1827",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_12_1_200412_115522-w2736-h1827",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016072725_2_1_200327_113015-w3000-h2000",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016072725_2_1_200327_113015-w3000-h2000",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_1_1_200412_115522-w2736-h1827",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_1_1_200412_115522-w2736-h1827",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_3_1_200412_115522-w2736-h1827",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_3_1_200412_115522-w2736-h1827",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_4_1_200412_115522-w2736-h1827",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016210813_4_1_200412_115522-w2736-h1827",  # noqa
             },
         ],
         "headline": "Unique Three-Bedroom Apartment in Urban Living Locale",
-        "summary_description": "<b></b><br />PRIVATE INSPECTION and VIRTUAL WALK THROUGH AVAILABLE.\r\n\r\nCentrally located in the heart of Kensington this unique three-bedroom apartment boasts a court yard and is an impressive rare find.  \r\nA short walking distance to the finest amenit...",
+        "summary_description": "<b></b><br />PRIVATE INSPECTION and VIRTUAL WALK THROUGH AVAILABLE.\r\n\r\nCentrally located in the heart of Kensington this unique three-bedroom apartment boasts a court yard and is an impressive rare find.  \r\nA short walking distance to the finest amenit...",  # noqa
         "has_floorplan": True,
         "has_video": False,
         "labels": [],
@@ -273,7 +273,7 @@ sample_two = {
         "logo_url": "https://cdn.walk.sc/images/api-logo.png",
         "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
         "more_info_link": "https://www.redfin.com/how-walk-score-works",
-        "ws_link": "https://www.walkscore.com/score/107.slash.72-Altona-Street-Kensington/lat=-37.7969246/lng=144.92627/?utm_source=nick.klein@rutgers.edu&utm_medium=ws_api&utm_campaign=ws_api",
+        "ws_link": "https://www.walkscore.com/score/107.slash.72-Altona-Street-Kensington/lat=-37.7969246/lng=144.92627",  # noqa
         "help_link": "https://www.redfin.com/how-walk-score-works",
         "snapped_lat": -37.797,
         "snapped_lon": 144.927,
@@ -303,11 +303,11 @@ sample_three = {
             "contacts": [
                 {
                     "name": "Ryan Currie",
-                    "photo_url": "https://images.domain.com.au/img/4478/contact_1316286.jpeg?mod=200806-142003",
+                    "photo_url": "https://images.domain.com.au/img/4478/contact_1316286.jpeg?mod=200806-142003",  # noqa
                 },
                 {
                     "name": "Sally Carr",
-                    "photo_url": "https://images.domain.com.au/img/4478/contact_1486900.jpeg?mod=200806-150334",
+                    "photo_url": "https://images.domain.com.au/img/4478/contact_1486900.jpeg?mod=200806-150334",  # noqa
                 },
             ],
         },
@@ -320,23 +320,23 @@ sample_three = {
         "media": [
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_1_1_200227_064936-w1600-h1067",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_1_1_200227_064936-w1600-h1067",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_2_1_200227_064936-w1600-h1067",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_2_1_200227_064936-w1600-h1067",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_3_1_200227_064936-w1600-h1067",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_3_1_200227_064936-w1600-h1067",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_4_1_200227_064936-w1600-h1067",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_4_1_200227_064936-w1600-h1067",  # noqa
             },
             {
                 "category": "Image",
-                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_5_1_200227_064936-w1600-h1067",
+                "url": "https://bucket-api.domain.com.au/v1/bucket/image/2016113445_5_1_200227_064936-w1600-h1067",  # noqa
             },
         ],
         "property_details": {
@@ -369,7 +369,7 @@ sample_three = {
             "tags": None,
         },
         "headline": "ONE OF THE BEST VALUE TOWNHOMES CURRENTLY ON THE MARKET",
-        "summary_description": "<b></b><br />*Due to Melbourne's Stage 4 Restrictions, all Nelson Alexander team members are working from home. Please contact us via email or phone to speak about your options to view this property virtually. Thank you.*\n\nSituated in the heart of Sedd...",
+        "summary_description": "<b></b><br />*Due to Melbourne's Stage 4 Restrictions, all Nelson Alexander team members are working from home. Please contact us via email or phone to speak about your options to view this property virtually. Thank you.*\n\nSituated in the heart of Sedd...",  # noqa
         "has_floorplan": True,
         "has_video": False,
         "labels": [],
@@ -396,7 +396,7 @@ sample_three = {
         "logo_url": "https://cdn.walk.sc/images/api-logo.png",
         "more_info_icon": "https://cdn.walk.sc/images/api-more-info.gif",
         "more_info_link": "https://www.redfin.com/how-walk-score-works",
-        "ws_link": "https://www.walkscore.com/score/2A-Oscar-Street-Seddon/lat=-37.808197/lng=144.884888/?utm_source=nick.klein@rutgers.edu&utm_medium=ws_api&utm_campaign=ws_api",
+        "ws_link": "https://www.walkscore.com/score/2A-Oscar-Street-Seddon/lat=-37.808197/lng=144.884888",  # noqa
         "help_link": "https://www.redfin.com/how-walk-score-works",
         "snapped_lat": -37.8075,
         "snapped_lon": 144.885,
@@ -562,7 +562,7 @@ def test_clean_response(sample_search_result: dict, expected: dict) -> None:
                 "id": None,
                 "listing_slug": "",
                 "price": "",
-                "address": {"displayable_address": "", "postcode": "", "state": "",},
+                "address": {"displayable_address": "", "postcode": "", "state": "", },
                 "property_details": {
                     "property_type": "",
                     "features": [],
