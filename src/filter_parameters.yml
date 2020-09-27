@@ -30,3 +30,17 @@ features:
       - dishwasher
       - dish washer
       - dish
+  SwimmingPool:
+    domain:
+      - SwimmingPool
+    desc:
+      - swimmingpool
+      - Swimming pool
+      - pool
+      - lap pool
+  Dishwasher:
+    domain:
+      - Dishwasher
+    desc:
+      - dishwasher
+      - dish washer
