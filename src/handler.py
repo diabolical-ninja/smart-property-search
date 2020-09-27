@@ -5,6 +5,8 @@ import os
 
 from logging_setup import configure_logger
 
+from response_parser import clean_response
+
 from smart_search import SmartSearch
 
 from utils import json_serial
@@ -78,9 +80,10 @@ def search(event: dict, context: object) -> dict:
             searcher.filter_walkscore(smart_filters["walkscore"])
             LOGGER.info("Filtering by minimum walkscore...Done")
 
+        clean_search_results = [clean_response(x) for x in searcher.search_results]
         response = {
             "statusCode": 200,
-            "body": json.dumps(searcher.search_results, default=json_serial)
+            "body": json.dumps(clean_search_results, default=json_serial)
         }
 
         return response
