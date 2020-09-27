@@ -54,6 +54,7 @@ To query the API make a `POST` request using your favourite client & include a `
 -   `Domain` [residential search](https://developer.domain.com.au/docs/latest/apis/pkg_agents_listings/references/listings_detailedresidentialsearch)
 -   `Filters` are (optional) additional parameters to filter the results
 
+
 Currently the supported filters are:
 * `travelTime`
     - A desired destination & the maximum allowable public transport time to get there
@@ -68,6 +69,10 @@ Currently the supported filters are:
     - List of desired NBN types from [NBN technologies](https://www.nbnco.com.au/learn/network-technology)
 * `walkscore`
     - Minimum allowable walkscore value, as defined by [Walk Score](https://www.walkscore.com/)
+
+
+Full deatils or requests & the acceptable parameters are available in `search_schema.json`
+
 
 A request will look like:
 
