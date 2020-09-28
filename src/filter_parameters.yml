@@ -44,3 +44,38 @@ features:
     desc:
       - dishwasher
       - dish washer
+  Gas:
+    domain:
+      - Gas
+    desc:
+      - gas
+  Gym:
+    domain:
+      - Gym
+    desc:
+      - gym
+      - gymnasium
+  Bath:
+    domain:
+      - Bath
+    desc:
+      - bath
+      - bathtub
+      - tub
+  Fireplace:
+    domain:
+      - Fireplace
+    desc:
+      - fireplace
+      - fire
+      - fire pit
+      - fire place
+  BuiltInRobes:
+    domain:
+      - BuiltInWardrobes
+    desc:
+      - wardrobe
+      - robes
+      - bir
+      - built it robes
+      - built it wardrobe
