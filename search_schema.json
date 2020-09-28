@@ -445,7 +445,7 @@
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "enum": ["AirConditioning", "Heating", "Outside", "Dishwasher"]
+                        "enum": ["AirConditioning", "Heating", "Outside", "Dishwasher", "Gas", "Gym", "Bath", "Fireplace", "BuiltInRobes"]
                     }
                 },
                 "nbn": {
