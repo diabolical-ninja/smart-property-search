@@ -2,7 +2,7 @@ service: smart-property-search
 
 provider:
   name: aws
-  timeout: 60
+  timeout: 180
   runtime: python3.6
   region: ${env:AWS_REGION}
   environment:
