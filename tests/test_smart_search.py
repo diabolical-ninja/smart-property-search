@@ -103,8 +103,8 @@ sample_listing = {
 sample_listing_empty = {
     "listing": {
         "property_details": {
-            "displayable_address": "123 fake st, Willywonka",
-            "state": "NSW",
+            "displayable_address": "",
+            "state": "",
         }
     }
 }
