@@ -2,3 +2,4 @@ requests
 googlemaps
 pytz
 pyyaml
+six
